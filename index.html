@@ -346,15 +346,17 @@ if ('serviceWorker' in navigator) {
     });
 }
     
-// 2. Configuration Firebase
+// 2. Configuration Firebase (Version Web mise à jour)
 const firebaseConfig = {
-    apiKey: "AIzaSyCck9CMGV8d-yww7kW_Uix6Z7HWM_xrxww",
+    apiKey: "AIzaSyCTHkxP-7sH4z1xid_XrSVwlhXAbWz9Tck",
     authDomain: "swcsa-f93bf.firebaseapp.com",
     projectId: "swcsa-f93bf",
     storageBucket: "swcsa-f93bf.firebasestorage.app",
     messagingSenderId: "1095568817559",
-    appId: "1:1095568817559:android:70818c584c66cba71118d2"
+    appId: "1:1095568817559:web:2b295f1b2cb2a57d1118d2",
+    measurementId: "G-DMEPWC7BB0"
 };
+
 
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
@@ -421,6 +423,30 @@ window.addEventListener('load', () => {
     // Bloquer le clic droit
     document.addEventListener('contextmenu', event => event.preventDefault());
 });
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Empêche Chrome d'afficher la bannière automatique trop vite
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Tu peux ici afficher un bouton "Installer notre App" caché par défaut
+    console.log("L'application est prête à être installée");
+});
+
+// Fonction à appeler si tu crées un bouton "Installer"
+function installApp() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('Utilisateur a accepté l\'installation');
+            }
+            deferredPrompt = null;
+        });
+    }
+}
+    
 </script>
 
 </body>
