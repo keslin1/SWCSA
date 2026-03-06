@@ -1,7 +1,6 @@
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
 
-// Configuration Firebase (identique à ton index.html)
 const firebaseConfig = {
     apiKey: "AIzaSyCck9CMGV8d-yww7kW_Uix6Z7HWM_xrxww",
     authDomain: "swcsa-f93bf.firebaseapp.com",
@@ -14,16 +13,31 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-// Gestion des messages quand l'application est en arrière-plan
-messaging.onBackgroundMessage(function(payload) {
-    console.log('Message reçu en arrière-plan: ', payload);
+// --- AJOUT POUR L'INSTALLATION ---
+// Événement d'installation
+self.addEventListener('install', (event) => {
+    console.log('Service Worker: Installé');
+    self.skipWaiting();
+});
 
+// Événement d'activation
+self.addEventListener('activate', (event) => {
+    console.log('Service Worker: Activé');
+});
+
+// IMPORTANT : Le navigateur exige cet événement "fetch" pour permettre l'installation
+self.addEventListener('fetch', (event) => {
+    // On laisse les requêtes passer normalement
+    event.respondWith(fetch(event.request));
+});
+// ---------------------------------
+
+messaging.onBackgroundMessage(function(payload) {
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
         body: payload.notification.body,
-        icon: 'SWCSA.jpg' // Utilise ton logo pour la notification
+        icon: 'SWCSA.png'
     };
-
     self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
