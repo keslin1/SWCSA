@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finaliser ma commande - swcsa</title>
+    <style>
+        :root {
+            --rouge-grenat: #800000;
+            --jaune-fonce: #CC9900;
+            --blanc: #FFFFFF;
+            --noir: #000000;
+            --gris-clair: #f4f4f4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--gris-clair);
+            color: var(--noir);
+            line-height: 1.6;
+        }
+
+        /* En-tête */
+        header {
+            background-color: var(--rouge-grenat);
+            color: var(--jaune-fonce);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--blanc);
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        header h2 {
+            font-size: 18px;
+        }
+
+        /* Conteneur principal */
+        .transaction-container {
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--jaune-fonce);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            color: var(--rouge-grenat);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .payment-info {
+            background: #fff9e6;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed var(--jaune-fonce);
+            margin-bottom: 20px;
+        }
+
+        .payment-info p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--rouge-grenat);
+            display: block;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .instruction {
+            font-size: 13px;
+            color: #555;
+            margin-top: 20px;
+            padding: 10px;
+            background: #eee;
+            border-radius: 5px;
+        }
+
+        /* Bouton de confirmation WhatsApp */
+        .confirm-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25D366; /* Vert WhatsApp */
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+        }
+
+        .confirm-btn:active {
+            transform: scale(0.95);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="matériel.html" class="back-btn">&#10094;</a>
+    <h2>Paiement SWCSA</h2>
+</header>
+
+<div class="transaction-container">
+    <div class="card">
+        <h3>Informations de paiement</h3>
+        
+        <div class="payment-info">
+            <p>Veuillez effectuer votre transfert sur ce compte :</p>
+            <span class="highlight">+509 39010411</span>
+            <span class="highlight">+509 55279904</span>
+            <hr style="margin: 15px 0; border: 0.5px solid #ddd;">
+            <p>Nom du destinataire :</p>
+            <span class="highlight" style="font-size: 18px;">J. Peterson Belizaire</span>
+        </div>
+
+        <p class="instruction">
+            Une fois le transfert effectué, veuillez cliquer sur le bouton ci-dessous pour envoyer la preuve de paiement (capture d'écran) via whatsapp afin de valider votre commande.
+        </p>
+    </div>
+
+    <a href="https://wa.me/50955279904?text=Bonjour,%20je%20viens%20d'effectuer%20un%20paiement%20pour%20ma%20commande%20swcsa." class="confirm-btn">
+        Envoyer mon reçu sur whatsapp
+    </a>
+</div>
+
+<footer>
+    <p>© 2026 SWCSA - Transaction sécurisée</p>
+</footer>
+
+</body>
+</html>

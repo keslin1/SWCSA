@@ -1,0 +1,22 @@
+{
+  "name": "Sense of Wonder Creations School of the Arts",
+  "short_name": "SWCSA",
+  "description": "École d'art physique et en ligne.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#800000",
+  "theme_color": "#800000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "SWCSA.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "SWCSA.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

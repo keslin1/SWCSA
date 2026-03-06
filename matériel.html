@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tous les matériels - swcsa</title>
+    <style>
+        :root {
+            --rouge-grenat: #800000;
+            --jaune-fonce: #CC9900;
+            --blanc: #FFFFFF;
+            --noir: #000000;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--blanc);
+            color: var(--noir);
+            line-height: 1.6;
+            overflow-x: hidden; /* Empêche le défilement horizontal pendant l'animation */
+        }
+
+        /* En-tête avec bouton retour */
+        header {
+            background-color: var(--rouge-grenat);
+            color: var(--jaune-fonce);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--blanc);
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        header h2 {
+            font-size: 20px;
+        }
+
+        /* Titre de la page */
+        .page-banner {
+            background-color: var(--jaune-fonce);
+            color: var(--rouge-grenat);
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Grille des produits */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 15px;
+        }
+
+        /* Animation de sortie de barre vers le haut */
+        @keyframes slideFromBar {
+            0% {
+                opacity: 0;
+                transform: translateX(50px) translateY(100px); /* Part de la droite et du bas */
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        .product-item {
+            border: 2px solid var(--jaune-fonce);
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            text-align: center;
+            padding-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            
+            /* Application de l'animation */
+            animation: slideFromBar 0.6s ease-out forwards;
+            opacity: 0; /* Reste invisible avant le début de l'animation */
+        }
+
+        /* Délais progressifs pour l'effet de cascade */
+        .product-item:nth-child(1) { animation-delay: 0.1s; }
+        .product-item:nth-child(2) { animation-delay: 0.2s; }
+        .product-item:nth-child(3) { animation-delay: 0.3s; }
+        .product-item:nth-child(4) { animation-delay: 0.4s; }
+        .product-item:nth-child(5) { animation-delay: 0.5s; }
+        .product-item:nth-child(6) { animation-delay: 0.6s; }
+        .product-item:nth-child(7) { animation-delay: 0.7s; }
+        .product-item:nth-child(8) { animation-delay: 0.8s; }
+
+        .product-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-info {
+            padding: 10px;
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-price {
+            color: var(--rouge-grenat);
+            font-size: 18px;
+            font-weight: 900;
+            display: block;
+        }
+
+        /* Bouton commander */
+        .order-btn {
+            display: inline-block;
+            background-color: var(--rouge-grenat);
+            color: var(--jaune-fonce);
+            text-decoration: none;
+            padding: 8px 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="back-btn">&#10094;</a>
+    <h2>Boutique SWCSA</h2>
+</header>
+
+<div class="page-banner">
+    Tous nos matériels d'art disponibles
+</div>
+
+<main>
+    <div class="inventory-grid">
+        <div class="product-item">
+            <img src="swcsa 5.jpg" alt="Gomme éléctrique">
+            <div class="product-info">
+                <p class="product-name">Gomme éléctrique</p>
+                <span class="product-price">29.00 $</span>
+                <a href="transaction.html" class="order-btn">Commander</a>
+            </div>
+        </div>
+
+        <div class="product-item">
+            <img src="swcsa 6.jpg" alt="Gant de protection">
+            <div class="product-info">
+                <p class="product-name">Gant de protection</p>
+                <span class="product-price">4.99 $</span>
+                <a href="transaction.html" class="order-btn">Commander</a>
+            </div>
+        </div>
+
+        <div class="product-item">
+            <img src="swcsa 7.jpg" alt="Crayon haut gamme">
+            <div class="product-info">
+                <p class="product-name">Crayon haut gamme</p>
+                <span class="product-price">29.00 $</span>
+                <a href="transaction.html" class="order-btn">Commander</a>
+            </div>
+        </div>
+
+        <div class="product-item">
+            <img src="swcsa 8.jpg" alt="Palette de peinture">
+            <div class="product-info">
+                <p class="product-name">Palette de peinture</p>
+                <span class="product-price">4.99 $</span>
+                <a href="transaction.html" class="order-btn">Commander</a>
+            </div>
+        </div>
+
+        <div class="product-item">
+            <img src="swcsa 9.jpg" alt="Jeu de pinceaux">
+            <div class="product-info">
+                <p class="product-name">Jeu de pinceaux</p>
+                <span class="product-price">18.99 $</span>
+                <a href="transaction.html" class="order-btn">Commander</a>
+            </div>
+        </div>
+
+        <div class="product-item">
+            <img src="swcsa 10.jpg" alt="Chevalet">
+            <div class="product-info">
+                <p class="product-name">Chevalet</p>
+                <span class="product-price">69.99 $</span>
+                <a href="transaction.html" class="order-btn">Commander</a>
+            </div>
+        </div>
+
+        <div class="product-item">
+            <img src="swcsa 11.jpg" alt="Peinture acrylique pro">
+            <div class="product-info">
+                <p class="product-name">Peinture acrylique pro</p>
+                <span class="product-price">55.00 $</span>
+                <a href="transaction.html" class="order-btn">Commander</a>
+            </div>
+        </div>
+
+        <div class="product-item">
+            <img src="swcsa 12.jpg" alt="Gomme à mie de pain">
+            <div class="product-info">
+                <p class="product-name">Gomme à mie de pain</p>
+                <span class="product-price">7.50 $</span>
+                <a href="transaction.html" class="order-btn">Commander</a>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <p>© 2026 SWCSA - Tous droits réservés.</p>
+</footer>
+
+</body>
+</html>

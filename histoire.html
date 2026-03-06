@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Istwa lekòl la - swcsa</title>
+    <style>
+        :root {
+            --rouge-grenat: #800000;
+            --jaune-fonce: #CC9900;
+            --blanc: #FFFFFF;
+            --noir: #000000;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--blanc);
+            color: var(--noir);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* En-tête */
+        header {
+            background-color: var(--rouge-grenat);
+            color: var(--jaune-fonce);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--blanc);
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        header h2 {
+            font-size: 20px;
+        }
+
+        /* Animation d'entrée : bas-droite vers le haut */
+        @keyframes slideUpRight {
+            0% {
+                opacity: 0;
+                transform: translate(50px, 100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+        }
+
+        .animate-content {
+            animation: slideUpRight 1s ease-out forwards;
+        }
+
+        /* Section logo */
+        .logo-container {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .logo-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--jaune-fonce);
+            object-fit: cover;
+        }
+
+        /* Contenu de l'histoire */
+        .content {
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            color: var(--noir); /* Texte d'information en noir */
+        }
+
+        .content h1 {
+            color: var(--rouge-grenat);
+            font-size: 22px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--jaune-fonce);
+            padding-left: 10px;
+        }
+
+        .content p {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 16px;
+        }
+
+        strong {
+            color: var(--noir);
+        }
+footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #888;
+        }    
+    
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="back-btn">&#10094;</a>
+    <h2>Istwa lekòl la</h2>
+</header>
+
+<main class="animate-content">
+    <section class="logo-container">
+        <img src="swcsa.jpg" alt="Logo swcsa" class="logo-img">
+    </section>
+
+    <article class="content">
+        <h1>Depi 2014 rive jodi a</h1>
+
+        <p>
+            Sense of Wonder Creations School of the Arts (SWCSA) se yon lekòl d'art ki pran nesans an <strong>2014</strong> nan <strong>Centre Communautaire de KAYKOK</strong>, ki gen paj Facebook li sou non “Centre Communautaire de KAYKOK”. Depi o kòmansman, sant sa te ofri plizyè <strong>fòmasyon atistik e kiltirèl</strong> pou jèn, tankou penti (portrait, nati mòt, abstraksyon, elatriye) ansanm ak mizik (tanbou, gita, pyano, elatriye). Objektif lan se te ankouraje <strong>kreyativite</strong> ak <strong>devlopman talan</strong> lakay jèn yo.
+        </p>
+
+        <p>
+            Nan dat <strong>9 Desanm 2023</strong>, pwojè a pran yon nouvo etap ak ouvèti yon anèks nan <strong>Vil Okay</strong> ki te pote non "École d’Art et de Peinture du Sud d’Haïti (EAPSH)". Apre kèk tan, estrikti sa a vin pran endepandans li epi li adopte nouvo non li jodi a: Sense of Wonder Creations School of the Arts.
+        </p>
+
+        <p>
+            Jodi a, SWCSA ofri plizyè fòmasyon nan domèn art visuel tankou penti, pòtrè, kaligrafi, serigrafi ak lòt disiplin kreyatif. Lekòl la bay kou an <strong>prezansyèl</strong> ak <strong>anliy</strong>, sa ki pèmèt jèn ki nan diferan kote ka patisipe nan fòmasyon yo.
+        </p>
+
+        <p>
+            Depi lè nou kreye, SWCSA deja fòme plizyè gwoup jèn atis, li ede devlope talan yo
+, epi li kontinye ankouraje kilti ak kreyativite nan kominote a. Lekòl la vize kontinye elaji pwogram li yo pou bay plis opòtinite pou aprann nan domèn atistik.
+        </p>
+    </article>
+</main>
+<footer>
+    <p>© 2026 SWCSA - Tous droits réservés.</p>
+</footer>
+</body>
+</html>
