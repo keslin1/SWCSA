@@ -236,7 +236,50 @@ a {
             color: #888;
         }
         .social-icons span { margin: 0 10px; color: var(--jaune-fonce); }
-    </style>
+/* Style de la carte "Voir plus" à la fin du carrousel */
+.view-more-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9; /* Fond légèrement différent pour se distinguer */
+    border: 1px dashed #ccc; /* Bordure pointillée pour inviter à cliquer */
+    min-width: 120px; /* Plus petit que les cartes normales */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.view-more-link {
+    text-decoration: none;
+    color: #000;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-more-content {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.arrow-icon {
+    display: block;
+    font-size: 1.5rem;
+    margin-top: 5px;
+}
+
+/* Effet au survol */
+.view-more-card:hover {
+    background-color: #eeeeee;
+    border-color: #000;
+    transform: scale(1.02);
+}
+
+    
+        </style>
 </head>
 <body>
     
@@ -294,18 +337,28 @@ a {
     </div>    
     
 <h3 class="section-title">Matériels d'art à vendre</h3>
+
 <div class="shop-wrapper">
     <button class="nav-btn btn-left" onclick="prevSlide()">&#10094;</button>
     
     <div class="product-carousel" id="carousel">
-        <div class="product-card"><img src="SWCSA 5.jpg"><p>Gomme éléctrique</p><span class="price">29.00 $</span></div>
-        <div class="product-card"><img src="swcsa 6.jpg"><p>Gant de protection</p><span class="price">4.99 $</span></div>
-        <div class="product-card"><img src="SWCSA 7.jpg"><p>Crayon haut gamme</p><span class="price">29.00 $</span></div>
-        <div class="product-card"><img src="SWCSA 8.jpg"><p>Palette de peinture</p><span class="price">4.99 $</span></div>
-        <div class="product-card"><img src="SWCSA 9.jpg"><p>Jeu de pinceaux</p><span class="price">18.99 $</span></div>
-        <div class="product-card"><img src="SWCSA 10.jpg"><p>Chevalet</p><span class="price">69.99 $</span></div>
-        <div class="product-card"><img src="SWCSA 11.jpg"><p>Peinture acrylique pro</p><span class="price">55.00 $</span></div>
-        <div class="product-card"><img src="SWCSA 12.jpg"><p>Gomme à mie de pain</p><span class="price">7.50 $</span></div>
+        <div class="product-card"><img src="SWCSA 5.jpg"><p>Gomme électrique</p><span class="price">25.93 $</span></div>
+        <div class="product-card"><img src="swcsa 6.jpg"><p>Gant de protection</p><span class="price">7.41 $</span></div>
+        <div class="product-card"><img src="SWCSA 7.jpg"><p>Crayon haut de gamme</p><span class="price">25.93 $</span></div>
+        <div class="product-card"><img src="SWCSA 8.jpg"><p>Palette de peinture</p><span class="price">7.41 $</span></div>
+        <div class="product-card"><img src="SWCSA 9.jpg"><p>Jeu de pinceaux</p><span class="price">18.52 $</span></div>
+        <div class="product-card"><img src="SWCSA 10.jpg"><p>Chevalet</p><span class="price">74.07 $</span></div>
+        <div class="product-card"><img src="SWCSA 11.jpg"><p>Peinture acrylique pro</p><span class="price">55.56 $</span></div>
+        <div class="product-card"><img src="SWCSA 12.jpg"><p>Gomme à mie de pain</p><span class="price">11.11 $</span></div>
+
+        <div class="product-card view-more-card">
+            <a href="matériel.html" class="view-more-link">
+                <div class="view-more-content">
+                    <span>Voir plus</span>
+                    <i class="arrow-icon">→</i>
+                </div>
+            </a>
+        </div>
     </div>
     
     <button class="nav-btn btn-right" onclick="nextSlide()">&#10095;</button>
