@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkilatris Pwa ak Pri - Les Cayes Dropshipping</title>
+    <style>
+        :root {
+            /* Palette de couleurs harmonisée */
+            --bleu-marin: #001f3f;
+            --bleu-clair: #0074D9;
+            --vert-kaki: #8fbc8f;
+            --jaune-soley: #f1c40f;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --font-main: Arial, Helvetica, sans-serif;
+        }
+
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg);
+            margin: 0; padding: 15px;
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--bleu-marin);
+        }
+
+        .container {
+            width: 100%; max-width: 450px;
+            background: var(--white); border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            overflow: hidden; position: relative;
+            border: 1px solid #eee;
+        }
+
+        /* Header avec dégradé Bleu Marin */
+        .header {
+            background: linear-gradient(135deg, var(--bleu-marin) 0%, var(--bleu-clair) 100%); 
+            color: white;
+            padding: 25px 20px; text-align: center;
+        }
+
+        .header h2 { 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .form-section { padding: 25px; }
+
+        .input-grid {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px; margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block; font-size: 0.7rem; font-weight: 800;
+            margin-bottom: 6px; color: var(--bleu-marin);
+            text-transform: uppercase; opacity: 0.8;
+        }
+
+        input {
+            width: 100%; padding: 14px; border: 1.5px solid #e0e0e0;
+            border-radius: 12px; box-sizing: border-box; text-align: center;
+            font-size: 1rem; font-weight: 700; color: var(--bleu-marin);
+            background: #fafafa; transition: 0.2s;
+        }
+
+        input:focus {
+            outline: none; border-color: var(--vert-kaki); background: white;
+        }
+
+        /* Section Pwa Balans avec dégradé Jaune léger */
+        .pwa-reyel-group { 
+            margin-bottom: 25px; 
+            padding: 15px;
+            background: linear-gradient(135deg, #fffdf0 0%, #fef9e7 100%);
+            border-radius: 15px;
+            border: 1px dashed var(--jaune-soley);
+        }
+
+        /* Bouton Principal avec dégradé Vert Kaki */
+        button {
+            width: 100%; padding: 18px; border: none; border-radius: 15px;
+            background: linear-gradient(135deg, var(--vert-kaki) 0%, #76a376 100%);
+            color: white; font-weight: 900; 
+            cursor: pointer; font-size: 0.95rem; 
+            box-shadow: 0 4px 12px rgba(143, 188, 143, 0.3);
+            transition: 0.3s;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .btn-clear { 
+            background: transparent; border: 1px solid #ddd; 
+            color: #999; margin-top: 12px; padding: 10px; 
+            box-shadow: none; font-size: 0.8rem;
+        }
+
+        /* Résultat avec dégradé soft */
+        .current-res {
+            margin-top: 25px; padding: 20px; border-radius: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #f4fbf4 100%);
+            border: 2px solid var(--vert-kaki);
+            text-align: center; display: none;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .price-display { 
+            font-size: 2.5rem; 
+            color: var(--bleu-marin); 
+            font-weight: 900; margin: 10px 0;
+        }
+
+        .tarif-badge {
+            display: inline-block; padding: 5px 12px; 
+            background: var(--jaune-soley); color: var(--bleu-marin);
+            border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+        }
+
+        /* Istorik */
+        .history-area { width: 100%; max-width: 450px; margin-top: 30px; }
+        .history-title { font-weight: 900; margin-bottom: 15px; color: var(--bleu-marin); font-size: 0.9rem; text-transform: uppercase; }
+        
+        .history-card {
+            background: white; padding: 15px; border-radius: 15px;
+            margin-bottom: 12px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 3px 6px rgba(0,0,0,0.03);
+            border-left: 6px solid var(--vert-kaki);
+        }
+
+        .hist-val { font-weight: 900; color: var(--vert-kaki); font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>Kalkil Kolis LCD</h2>
+    </div>
+
+    <div class="form-section">
+        <div class="input-grid">
+            <div class="input-group"><label>Longè (cm)</label><input type="number" id="L" placeholder="0"></div>
+            <div class="input-group"><label>Lajè (cm)</label><input type="number" id="l" placeholder="0"></div>
+            <div class="input-group"><label>Wotè (cm)</label><input type="number" id="H" placeholder="0"></div>
+        </div>
+
+        <div class="input-group pwa-reyel-group">
+            <label style="color: #b7950b;">Pwa sou balans (lb)</label>
+            <input type="number" id="pwa_balans" placeholder="0.00">
+        </div>
+
+        <button onclick="kalkile()">Kalkile Pri a kounye a</button>
+        <button class="btn-clear" onclick="resetAll()">Efase kalkil sa</button>
+
+        <div id="currentRes" class="current-res">
+            <div style="font-size: 0.7rem; font-weight: 900; color: #888; text-transform: uppercase;">Total pwa kalkile :</div>
+            <div id="p_res" style="font-weight: 800; font-size: 1.2rem; margin-top: 5px;">0.00 lb</div>
+            <div class="price-display">$<span id="pr_res">0.00</span></div>
+            <div id="tarif_res" class="tarif-badge"></div>
+        </div>
+    </div>
+</div>
+
+<div class="history-area">
+    <div class="history-title">Dènye kalkil ou yo</div>
+    <div id="historyList"></div>
+</div>
+
+<script>
+    let historyData = JSON.parse(localStorage.getItem('lcd_history')) || [];
+    renderHistory();
+
+    function kalkile() {
+        const L = parseFloat(document.getElementById('L').value) || 0;
+        const l = parseFloat(document.getElementById('l').value) || 0;
+        const H = parseFloat(document.getElementById('H').value) || 0;
+        const pwaBalans = parseFloat(document.getElementById('pwa_balans').value) || 0;
+
+        const pwaVolimik = (L * l * H) / 4000;
+        let pwaFinal = pwaVolimik + pwaBalans;
+
+        if (pwaFinal > 0) {
+            let tarif = 4.90;
+            if (pwaFinal >= 50) {
+                tarif = 3.99;
+            }
+
+            const priTotal = pwaFinal * tarif;
+            const dat = new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
+
+            document.getElementById('p_res').innerText = pwaFinal.toFixed(2) + " lb";
+            document.getElementById('pr_res').innerText = priTotal.toFixed(2);
+            document.getElementById('tarif_res').innerText = "Tarif aplike: $" + tarif + "/lb";
+            document.getElementById('currentRes').style.display = 'block';
+
+            addHistory(pwaFinal.toFixed(2), priTotal.toFixed(2), dat);
+        }
+    }
+
+    function addHistory(pwa, pri, dat) {
+        historyData.unshift({ pwa, pri, dat });
+        if (historyData.length > 5) historyData.pop();
+        localStorage.setItem('lcd_history', JSON.stringify(historyData));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const list = document.getElementById('historyList');
+        list.innerHTML = '';
+        historyData.forEach(item => {
+            list.innerHTML += `
+                <div class="history-card">
+                    <div>
+                        <span style="font-size:0.65rem; color:#999; font-weight:700;">${item.dat}</span><br>
+                        <strong style="color:var(--bleu-marin);">${item.pwa} lb</strong>
+                    </div>
+                    <div class="hist-val">$${item.pri}</div>
+                </div>
+            `;
+        });
+    }
+
+    function resetAll() {
+        document.getElementById('L').value = '';
+        document.getElementById('l').value = '';
+        document.getElementById('H').value = '';
+        document.getElementById('pwa_balans').value = '';
+        document.getElementById('currentRes').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
