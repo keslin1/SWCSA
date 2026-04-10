@@ -28,12 +28,6 @@
 </head>
 <body>
 
-<!-- ===== SPLASH SCREEN ===== -->
-<div id="splash-screen">
-  <img src="/lescayesdropshipping.png" alt="Logo" style="width:110px;border-radius:20px;">
-  <div class="spinner"></div>
-</div>
-
 <!-- ===== PAGE LOADER ===== -->
 <div id="page-loader">
   <div class="pl-inner">
@@ -47,28 +41,45 @@
   <div class="login-card">
     <img src="lescayesdropshipping.png" alt="Les Cayes Dropshipping" class="logo-main">
     <h2>Byenvini</h2>
-    <p>Ranpli pwofil ou pou w komanse sèvi ak platfòm lan.</p>
+    <p>Ranpli pwofil ou pou w kòmanse ak sèvis la.</p>
+    
     <form id="registration-form">
       <div class="input-container">
         <span class="material-icons">person</span>
-        <input type="text" name="nom" id="reg-nom" placeholder="Non konplè (ex: Jean Paul)" required>
+        <input type="text" id="reg-nom" placeholder="Non konplè (pou livrezon)" required>
       </div>
+      
       <div class="input-container">
         <span class="material-icons">email</span>
-        <input type="email" name="email" id="reg-email" placeholder="Imel (ex: jean@gmail.com)" required>
+        <input type="email" id="reg-email" placeholder="Adrès imèl (obligatwa)" required>
       </div>
+      
       <div class="input-container">
         <span class="material-icons">phone</span>
-        <input type="tel" name="telephone" id="reg-telephone" placeholder="Telefòn (ex: 50937001234)" required>
+        <input type="tel" id="reg-phone" placeholder="Telefòn Whatsapp (+509...)" required>
       </div>
+      
       <div class="input-container">
         <span class="material-icons">location_on</span>
-        <input type="text" name="address" id="reg-address" placeholder="Adrès (ex: Camp-Perrin, Haiti Sud)" required>
+        <input type="text" id="reg-address" placeholder="Adrès detaye (Simon, etc.)" required>
       </div>
+      
       <div class="input-container">
-        <span class="material-icons">tag</span>
-        <input type="text" name="reference" id="reg-reference" placeholder="Referans (ex: AMI-001)" required>
+        <span class="material-icons">explore</span>
+        <select id="reg-reference" required style="width: 100%; border:none; background:transparent; outline:none; font-size:15px; color:#555;">
+            <option value="">Kijan w konnen nou?</option>
+            <option value="Facebook">Facebook</option>
+            <option value="TikTok">TikTok</option>
+            <option value="WhatsApp">Yon zanmi (WhatsApp)</option>
+            <option value="IA">Intelligence Artificielle</option>
+        </select>
       </div>
+
+      <div id="referant-container" style="display:none;" class="input-container">
+        <span class="material-icons">groups</span>
+        <input type="text" id="reg-referant-name" placeholder="Non moun ki refere-w la">
+      </div>
+
       <button type="submit" id="btn-submit">Kreye Kont Mwen →</button>
     </form>
   </div>

@@ -292,17 +292,28 @@
             Ajoute LCDrop sou ekran w
         </button>
 
-        <h2 class="section-title">Enfòmasyon pèsonèl</h2>
-        
+        <h2 class="section-title">Anfòmasyon pèsonèl</h2>
+
+        <!-- ===== PHOTO DE PROFIL ===== -->
+        <div class="info-card" style="align-items:center; flex-direction:row; gap:15px; padding:15px 20px;">
+            <div id="profile-avatar-wrap" style="position:relative; flex-shrink:0;">
+                <img id="profile-avatar-img"
+                     src="lescayesdropshipping.png"
+                     alt="Foto pwofil"
+                     style="width:72px; height:72px; border-radius:50%; object-fit:cover; border:3px solid var(--kaki); display:block;">
+                <label for="profile-photo-input"
+                       style="position:absolute; bottom:0; right:0; background:var(--bleu-marin); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                    <span class="material-icons" style="font-size:14px; color:white;">photo_camera</span>
+                </label>
+                <input type="file" id="profile-photo-input" accept="image/*" style="display:none;">
+            </div>
+            <div>
+                <div style="font-weight:700; font-size:1em; color:var(--bleu-marin);" id="profile-name-display">Non w pako anrejistre</div>
+                <div style="font-size:0.82em; color:#888; margin-top:3px;" id="profile-email-display">Imèl ou pako anrejistre</div>
+            </div>
+        </div>
+
         <div class="info-card">
-            <div class="info-card-line">
-                <span class="material-icons">person</span>
-                <strong>Non:</strong> <span id="profile-name-display">Non w pako anrejistre</span>
-            </div>
-            <div class="info-card-line">
-                <span class="material-icons">email</span>
-                <strong>Imèl:</strong> <span id="profile-email-display">Imèl ou pako anrejistre</span>
-            </div>
             <div class="info-card-line">
                 <span class="material-icons">phone</span>
                 <strong>Telefòn:</strong> <span id="profile-phone-display">Telefòn ou pako anrejistre</span>
@@ -515,22 +526,43 @@
         }
     }
 
+    // ===== FOTO PWOFIL — chaje foto stoke si disponib =====
+    function loadProfilePhoto() {
+        const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+        const img = document.getElementById('profile-avatar-img');
+        if (img && profile.photo) {
+            img.src = profile.photo;
+        }
+    }
+
     // ===== INICIALIZASYON =====
     document.addEventListener('DOMContentLoaded', () => {
         const form            = document.getElementById('profile-form');
         const formContainer   = document.getElementById('profile-form-container');
         const editProfileBtn  = document.getElementById('edit-profile-btn');
 
-        // Afiche done pwofil si li egziste
+        // Afiche done pwofil si li egziste (+ foto)
         const updateUI = () => {
             const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
             const isProfileComplete = !!(profile.nom && profile.email);
 
+            // Toujou afiche done yo menm si fòm la ouvri
+            const nameEl    = document.getElementById('profile-name-display');
+            const emailEl   = document.getElementById('profile-email-display');
+            const phoneEl   = document.getElementById('profile-phone-display');
+            const addressEl = document.getElementById('profile-address-display');
+            if (nameEl)    nameEl.textContent    = profile.nom     || 'Non w pako anrejistre';
+            if (emailEl)   emailEl.textContent   = profile.email   || 'Imèl ou pako anrejistre';
+            if (phoneEl)   phoneEl.textContent   = profile.phone   || 'pako anrejistre';
+            if (addressEl) addressEl.textContent = profile.address || 'pako anrejistre';
+
+            // Foto pwofil
+            const avatarImg = document.getElementById('profile-avatar-img');
+            if (avatarImg && profile.photo) {
+                avatarImg.src = profile.photo;
+            }
+
             if (isProfileComplete) {
-                document.getElementById('profile-name-display').textContent    = profile.nom;
-                document.getElementById('profile-email-display').textContent   = profile.email;
-                document.getElementById('profile-phone-display').textContent   = profile.phone   || 'pako anrejistre';
-                document.getElementById('profile-address-display').textContent = profile.address || 'pako anrejistre';
                 formContainer.style.display = 'none';
             } else {
                 formContainer.style.display = 'block';
@@ -538,22 +570,52 @@
         };
 
         updateUI();
-        updateBadgeUI(); // Rafrechi badge lè paj la ouvri
+        updateBadgeUI();
 
-        // Bouton "Mete ajou pwofil"
+        // ===== UPLOAD FOTO PWOFIL =====
+        const photoInput = document.getElementById('profile-photo-input');
+        if (photoInput) {
+            photoInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const base64 = ev.target.result;
+                    // Sove foto nan profil
+                    const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+                    profile.photo = base64;
+                    localStorage.setItem(userStorageKey, JSON.stringify(profile));
+                    // Afiche imedyatman
+                    const avatarImg = document.getElementById('profile-avatar-img');
+                    if (avatarImg) avatarImg.src = base64;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Bouton "Mete ajou pwofil" — ouvri fòm ak done egzistan
         if (editProfileBtn) {
             editProfileBtn.addEventListener('click', () => {
                 formContainer.style.display = 'block';
                 formContainer.scrollIntoView({ behavior: 'smooth' });
                 const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
-                if (profile.nom)     document.getElementById('nom').value     = profile.nom;
-                if (profile.email)   document.getElementById('email').value   = profile.email;
-                if (profile.phone)   document.getElementById('phone').value   = profile.phone;
-                if (profile.address) document.getElementById('address').value = profile.address;
+                if (profile.nom)       document.getElementById('nom').value       = profile.nom;
+                if (profile.email)     document.getElementById('email').value     = profile.email;
+                if (profile.phone)     document.getElementById('phone').value     = profile.phone;
+                if (profile.address)   document.getElementById('address').value   = profile.address;
+                if (profile.reference) {
+                    document.getElementById('reference').value = profile.reference;
+                    if (profile.reference === 'WhatsApp') {
+                        document.getElementById('whatsapp-friend-container').style.display = 'block';
+                    }
+                }
+                if (profile.whatsapp_referant) {
+                    document.getElementById('whatsapp_name').value = profile.whatsapp_referant;
+                }
             });
         }
 
-        // Champ referans — montre/kache WhatsApp
+        // Champ referans — montre/kache champ non referan WhatsApp
         const referenceSelect         = document.getElementById('reference');
         const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
         if (referenceSelect) {
@@ -562,9 +624,11 @@
             });
         }
 
-        // Soumèt fòm pwofil
+        // Soumèt fòm pwofil — sove + voye Web3Forms
         form.addEventListener('submit', function(e) {
             e.preventDefault();
+
+            const existingProfile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
 
             const profileData = {
                 nom:               document.getElementById('nom').value.trim(),
@@ -572,10 +636,15 @@
                 phone:             document.getElementById('phone').value.trim(),
                 address:           document.getElementById('address').value.trim(),
                 reference:         document.getElementById('reference').value,
-                whatsapp_referant: document.getElementById('whatsapp_name').value.trim()
+                whatsapp_referant: document.getElementById('whatsapp_name').value.trim(),
+                // Konsève foto si deja la
+                photo:             existingProfile.photo || ''
             };
 
+            // Sove imedyatman nan localStorage
             localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+            localStorage.setItem('lcd_user_registered', 'true');
+            updateUI();
 
             const formData = new FormData();
             formData.append("access_key",        "a2d5b024-731b-4a8c-a5d4-d46a64e4f60a");
@@ -585,27 +654,23 @@
             formData.append("address",           profileData.address);
             formData.append("reference",         profileData.reference);
             formData.append("whatsapp_referant", profileData.whatsapp_referant);
-            formData.append("subject",           "Nouvo Pwofil LCDrop: " + profileData.nom);
+            formData.append("subject",           "Mizajou Pwofil LCDrop: " + profileData.nom);
 
             const saveBtn      = document.getElementById('save-profile-btn');
             const originalText = saveBtn.textContent;
-            saveBtn.textContent = "Ap voye...";
+            saveBtn.textContent = "Analize...";
             saveBtn.disabled    = true;
 
             fetch("https://api.web3forms.com/submit", { method: "POST", body: formData })
             .then(async (response) => {
                 if (response.ok) {
-                    alert('Pwofil ou anrejistre ak siksè !');
-                    updateUI();
+                    alert('Pwofil ou mete ajou ak siksè ! ✅');
                 } else {
-                    const result = await response.json();
-                    alert('Erè: ' + result.message);
+                    alert('Done yo sove nan telefòn ou. Ti pwoblèm rezo pou imèl la.');
                 }
             })
-            .catch(err => {
-                console.error("Erreur:", err);
-                alert('Done yo sove nan telefòn ou, men gen yon pwoblèm rezo pou voye email la.');
-                updateUI();
+            .catch(() => {
+                alert('Done yo sove nan telefòn ou, men pa gen koneksyon pou voye imèl la.');
             })
             .finally(() => {
                 saveBtn.textContent = originalText;

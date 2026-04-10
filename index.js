@@ -111,7 +111,6 @@ function refreshTopBar() {
   var titleEl  = document.getElementById('top-bar-title');
   if (!titleEl) return;
 
-  // Si itilizatè gen non oswa adrès, montre yo nan top bar
   var nom    = (profile.nom || '').trim();
   var adress = (profile.address || '').trim();
 
@@ -121,7 +120,113 @@ function refreshTopBar() {
   } else {
     titleEl.textContent = 'Les Cayes Drop...';
   }
+
+  // Sync avatar photo profil si disponib
+  var topLogo = document.getElementById('top-bar-logo');
+  if (topLogo && profile.photo) {
+    topLogo.src = profile.photo;
+    topLogo.style.borderRadius = '50%';
+    topLogo.style.objectFit = 'cover';
+    topLogo.style.width = '32px';
+    topLogo.style.height = '32px';
+  }
 }
+
+// Appel immédiat (avant DOMContentLoaded) pour éviter le flash
+(function() {
+  if (document.readyState !== 'loading') {
+    refreshTopBar();
+  }
+})();
+
+// Nou itilize menm kle a pou tout aplikasyon an
+const userStorageKey = 'user_profile_data';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const overlay      = document.getElementById('registration-overlay');
+    const regForm      = document.getElementById('registration-form');
+    const refSelect    = document.getElementById('reg-reference');
+    const refContainer = document.getElementById('referant-container');
+    const titleEl      = document.getElementById('top-bar-title');
+
+    // 1 (bis). RANPLI DONE YO NAN SEKSYON "MON COMPTE"
+    const updateAccountUI = (profile) => {
+        const nameDisplay    = document.getElementById('profile-name-display');
+        const emailDisplay   = document.getElementById('profile-email-display');
+        const phoneDisplay   = document.getElementById('profile-phone-display');
+        const addressDisplay = document.getElementById('profile-address-display');
+
+        if (nameDisplay)    nameDisplay.textContent    = profile.nom || 'pako anrejistre';
+        if (emailDisplay)   emailDisplay.textContent   = profile.email || 'pako anrejistre';
+        if (phoneDisplay)   phoneDisplay.textContent   = profile.phone || 'pako anrejistre';
+        if (addressDisplay) addressDisplay.textContent = profile.address || 'pako anrejistre';
+    };
+
+    // 3. CHÈKE SI ITILIZATÈ A GEN YON KONT OSWA SI NOU MONTRE OVERLAY
+    const checkUserStatus = () => {
+        const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+        if (profile.nom && profile.email) {
+            overlay.style.display = 'none';
+            refreshTopBar();   // appel à la fonction globale
+            updateAccountUI(profile);
+        } else {
+            overlay.style.display = 'flex';
+        }
+    };
+
+    // 4. LOGIK POU CHWA REFERANS
+    if (refSelect) {
+        refSelect.addEventListener('change', (e) => {
+            refContainer.style.display = e.target.value === 'WhatsApp' ? 'flex' : 'none';
+        });
+    }
+
+    // 5. SOUMÈT FÒM LAN (ENSKRIPSYON + WEB3FORMS)
+    regForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btn-submit');
+        
+        const profileData = {
+            nom:     document.getElementById('reg-nom').value.trim(),
+            email:   document.getElementById('reg-email').value.trim(),
+            phone:   document.getElementById('reg-phone').value.trim(),
+            address: document.getElementById('reg-address').value.trim(),
+            reference: document.getElementById('reg-reference').value,
+            whatsapp_referant: document.getElementById('reg-referant-name') ? document.getElementById('reg-referant-name').value.trim() : ""
+        };
+
+        btn.disabled = true;
+        btn.textContent = "Analize...";
+
+        const formData = new FormData();
+        formData.append("access_key", "a2d5b024-731b-4a8c-a5d4-d46a64e4f60a");
+        formData.append("subject", "Nouvo Enskripsyon LCD: " + profileData.nom);
+        Object.keys(profileData).forEach(key => formData.append(key, profileData[key]));
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
+            
+            // Nou sove done yo kèlkeswa repons rezo a pou kliyan an ka antre
+            localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+            localStorage.setItem('lcd_user_registered', 'true');
+            
+            if (response.ok) {
+                alert('Pwofil ou anrejistre ak siksè !');
+            } else {
+                alert('Done yo sove lokalman, men gen yon ti pwoblèm rezo.');
+            }
+            refreshTopBar();
+            checkUserStatus();
+        } catch (err) {
+            localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+            localStorage.setItem('lcd_user_registered', 'true');
+            refreshTopBar();
+            checkUserStatus();
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "Kreye Kont Mwen →";
+        }
+    });
 
 // ===== KONFIGIRASYON JENERAL =====
 const MESSAGE_KEY = 'lcd_user_messages';
@@ -498,37 +603,6 @@ window.effacerAvis = function (id) {
   }
 };
 
-
-
-// ===== KALKIL PWA VOLIMIK + PWA BALANS =====
-window.kalkile = function() {
-    const L = parseFloat(document.getElementById('L')?.value) || 0;
-    const l = parseFloat(document.getElementById('l')?.value) || 0;
-    const H = parseFloat(document.getElementById('H')?.value) || 0;
-    const pwaBalans = parseFloat(document.getElementById('pwa_balans')?.value) || 0;
-
-    const pwaVolimik = (L * l * H) / 4000;
-    let pwaFinal = pwaVolimik + pwaBalans;
-
-    if (pwaFinal > 0) {
-        let tarif = 4.90;
-        if (pwaFinal >= 50) { tarif = 3.99; }
-        const priTotal = pwaFinal * tarif;
-        const dat = new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
-
-        const pRes = document.getElementById('p_res');
-        const prRes = document.getElementById('pr_res');
-        const tarifRes = document.getElementById('tarif_res');
-        const currentRes = document.getElementById('currentRes');
-
-        if (pRes) pRes.innerText = pwaFinal.toFixed(2) + " lb";
-        if (prRes) prRes.innerText = priTotal.toFixed(2);
-        if (tarifRes) tarifRes.innerText = "Tarif: $" + tarif + "/lb";
-        if (currentRes) currentRes.style.display = 'block';
-        if (typeof addHistory === 'function') addHistory(pwaFinal.toFixed(2), priTotal.toFixed(2), dat);
-    }
-};
-
 // ===== INICIALIZASYON JENERAL LÈ PAJ LA CHAJE =====
 document.addEventListener('DOMContentLoaded', () => {
   const regOverlay   = document.getElementById('registration-overlay');
@@ -566,19 +640,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const nomVal       = (document.getElementById('reg-nom')?.value || '').trim();
       const emailVal     = (document.getElementById('reg-email')?.value || '').trim();
-      const telVal       = (document.getElementById('reg-telephone')?.value || '').trim();
+      const telVal       = (document.getElementById('reg-phone')?.value || '').trim();
       const adressVal    = (document.getElementById('reg-address')?.value || '').trim();
       const refVal       = (document.getElementById('reg-reference')?.value || '').trim();
+      const referantVal  = (document.getElementById('reg-referant-name')?.value || '').trim();
 
       if (!nomVal || !emailVal || !telVal || !adressVal || !refVal) return;
 
       // Sove pwofil konplè nan Kont (localStorage)
       let profile = JSON.parse(localStorage.getItem('user_profile_data') || '{}');
-      profile.nom       = nomVal;
-      profile.email     = emailVal;
-      profile.telephone = telVal;
-      profile.address   = adressVal;
-      profile.reference = refVal;
+      profile.nom               = nomVal;
+      profile.email             = emailVal;
+      profile.phone             = telVal;
+      profile.address           = adressVal;
+      profile.reference         = refVal;
+      profile.whatsapp_referant = referantVal;
       localStorage.setItem('user_profile_data', JSON.stringify(profile));
       localStorage.setItem('lcd_user_registered', 'true');
 
@@ -588,14 +664,15 @@ document.addEventListener('DOMContentLoaded', () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            access_key: '2ded0ed8-8bdb-4249-b804-ee4e27c06e8d',
-            subject: 'Nouvo kont LCD — ' + nomVal,
-            from_name: 'Les Cayes Dropshipping App',
-            nom: nomVal,
-            email: emailVal,
-            telephone: telVal,
-            adresse: adressVal,
-            reference: refVal
+            access_key:        'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a',
+            subject:           'Nouvo kont LCD — ' + nomVal,
+            from_name:         'Les Cayes Dropshipping App',
+            nom:               nomVal,
+            email:             emailVal,
+            telephone:         telVal,
+            adresse:           adressVal,
+            reference:         refVal,
+            whatsapp_referant: referantVal
           })
         });
       } catch(err) { console.log('Web3Forms err:', err); }

@@ -102,39 +102,69 @@ body {
 }
 
 /* ── REGISTRATION OVERLAY (LOGIN — 1 FWA SÈLMAN) ── */
+/* ── REGISTRATION OVERLAY PRO ── */
 #registration-overlay {
   position: fixed;
   inset: 0;
-  background: var(--white);
-  z-index: 9000;
+  background: #ffffff;
+  z-index: 10000; /* Au-dessus de tout */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  overflow-y: auto;
 }
 
 .login-card {
   width: 100%;
-  max-width: 350px;
+  max-width: 380px;
   text-align: center;
+  padding: 20px 10px;
 }
 
-.logo-main { width: 90px; border-radius: 20px; margin-bottom: 20px; }
+.logo-main { 
+  width: 100px; 
+  border-radius: 22px; 
+  margin-bottom: 20px; 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
 
-.login-card h2 { font-weight: 900; color: var(--bleu-marin); margin-bottom: 10px; }
+.login-card h2 { 
+  font-weight: 900; 
+  color: var(--bleu-marin); 
+  font-size: 1.6rem;
+  margin-bottom: 8px; 
+}
 
-.login-card p { font-size: 14px; color: var(--texte-soft); margin-bottom: 25px; }
+.login-card p { 
+  font-size: 14px; 
+  color: #666; 
+  margin-bottom: 30px; 
+  line-height: 1.4;
+}
 
 .input-container {
   display: flex;
   align-items: center;
-  background: #f4f4f4;
-  padding: 12px 15px;
-  border-radius: 12px;
-  margin-bottom: 15px;
+  background: #f1f3f6;
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  border: 1px solid transparent;
+  transition: 0.3s;
 }
 
-.input-container .material-icons { color: #888; margin-right: 10px; }
+.input-container:focus-within {
+  border-color: var(--bleu-marin);
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.input-container .material-icons { 
+  color: var(--bleu-marin); 
+  margin-right: 12px; 
+  font-size: 20px;
+}
 
 .input-container input {
   background: transparent;
@@ -142,21 +172,24 @@ body {
   outline: none;
   width: 100%;
   font-size: 15px;
+  color: #333;
 }
 
 #btn-submit {
   width: 100%;
-  padding: 15px;
+  padding: 18px;
   background: var(--bleu-marin);
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   font-weight: 800;
+  font-size: 16px;
   cursor: pointer;
-  margin-top: 5px;
+  margin-top: 15px;
+  transition: 0.3s;
 }
 
-.login-card .input-container { margin-bottom: 10px; }
+#btn-submit:active { transform: scale(0.97); }
 
 /* ── TOP BAR ── */
 #top-bar {
@@ -337,12 +370,14 @@ body {
 
 /* ── INSTALL BANNER ── */
 #install-banner {
-  position: fixed; bottom: 76px; left: 20px; right: 20px;
-  background: var(--bleu-marin); color: white; padding: 15px;
+  position: fixed; bottom: 145px; left: 20px; right: 20px;
+  background: linear-gradient(135deg, #00bcd4 0%, #0077a8 55%, #001f3f 100%);
+  color: white; padding: 15px;
   border-radius: 15px; display: flex; align-items: center;
   justify-content: space-between; z-index: 500;
+  box-shadow: 0 4px 18px rgba(0, 188, 212, 0.35);
 }
-#install-btn { background: white; color: var(--bleu-marin); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; }
+#install-btn { background: white; color: #0077a8; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; }
 
 /* ── NOTIFICATIONS ── */
 #notif-modal {
