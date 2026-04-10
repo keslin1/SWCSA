@@ -47,13 +47,29 @@
   <div class="login-card">
     <img src="lescayesdropshipping.png" alt="Les Cayes Dropshipping" class="logo-main">
     <h2>Byenvini</h2>
-    <p>Antre imel ou pou w komanse sèvi ak platfòm lan.</p>
+    <p>Ranpli pwofil ou pou w komanse sèvi ak platfòm lan.</p>
     <form id="registration-form">
       <div class="input-container">
-        <span class="material-icons">email</span>
-        <input type="email" name="email" id="reg-email" placeholder="Ex: zimbabwe190@gmail.com" required>
+        <span class="material-icons">person</span>
+        <input type="text" name="nom" id="reg-nom" placeholder="Non konplè (ex: Jean Paul)" required>
       </div>
-      <button type="submit" id="btn-submit">Konekte</button>
+      <div class="input-container">
+        <span class="material-icons">email</span>
+        <input type="email" name="email" id="reg-email" placeholder="Imel (ex: jean@gmail.com)" required>
+      </div>
+      <div class="input-container">
+        <span class="material-icons">phone</span>
+        <input type="tel" name="telephone" id="reg-telephone" placeholder="Telefòn (ex: 50937001234)" required>
+      </div>
+      <div class="input-container">
+        <span class="material-icons">location_on</span>
+        <input type="text" name="address" id="reg-address" placeholder="Adrès (ex: Camp-Perrin, Haiti Sud)" required>
+      </div>
+      <div class="input-container">
+        <span class="material-icons">tag</span>
+        <input type="text" name="reference" id="reg-reference" placeholder="Referans (ex: AMI-001)" required>
+      </div>
+      <button type="submit" id="btn-submit">Kreye Kont Mwen →</button>
     </form>
   </div>
 </div>
@@ -324,40 +340,10 @@
     </a>
 </footer>
 
-<!-- ===== CHAT-LCD : Icône flottante ===== -->
-<!-- Remplace l'ancien gros bouton WhatsApp -->
-<button id="chatlcd-fab" onclick="toggleChatlcd()" title="Chat-LCD">
-    <img src="monia.png" alt="Chat-LCD" id="chatlcd-fab-img" onerror="this.style.display='none'; document.getElementById('chatlcd-fab-fallback').style.display='flex';">
-    <span id="chatlcd-fab-fallback" style="display:none; align-items:center; justify-content:center; width:100%; height:100%; font-size:22px;">🤖</span>
-    <span class="chatlcd-fab-label">Chat-LCD</span>
-    <span class="chatlcd-notif" id="chatlcd-notif" style="display:none;">1</span>
-</button>
-
-<!-- ===== Chat-LCD : Interface de chat ===== -->
-<div id="chatlcd-window" class="hidden">
-    <div class="cgk-header">
-        <div class="cgk-header-info">
-            <img src="monia.png" alt="Monia" class="cgk-avatar" onerror="this.src='lescayesdropshipping.png'">
-            <div>
-                <div class="cgk-title">Chat-LCD</div>
-                <div class="cgk-subtitle">Asistan ofisyèl LCD • En ligne</div>
-            </div>
-        </div>
-        <button class="cgk-close-btn" onclick="closeChatlcd()">
-            <span class="material-icons">close</span>
-        </button>
-    </div>
-    <div class="cgk-messages" id="cgk-messages">
-        <!-- Mesaj yo chaje dinamikman -->
-    </div>
-    <div class="cgk-input-bar">
-        <input type="text" id="cgk-input" placeholder="Ekri mesaj ou..." autocomplete="off"
-               onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); sendChatlcd(); }">
-        <button onclick="sendChatlcd()" id="cgk-send-btn">
-            <span class="material-icons">send</span>
-        </button>
-    </div>
-</div>
+<!-- ===== BOUTON WHATSAPP BUSINESS ===== -->
+<a id="whatsapp-fab" href="https://wa.me/50931013968?text=Hello%20manager%20Thomas,%20m%20kontaktew%20apati%20de%20aplikasyon%20an" target="_blank" title="Kontakte nou sou WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
 
 <!-- ===== FIREBASE (module) ===== -->
 <script type="module">

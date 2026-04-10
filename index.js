@@ -498,271 +498,35 @@ window.effacerAvis = function (id) {
   }
 };
 
-// ===============================================================
-//  CHATlcd — Asistan IA anliy Les Cayes Dropshipping
-//  RAG : base de connaissances intégrée
-//  Multilingual : Français, Créole haïtien, Anglais
-//  Restriction : répond uniquement aux sujets LCD
-//  Historique : stocké dans localStorage ('cgk_history')
-// ===============================================================
 
-const CGK_HISTORY_KEY = 'cgk_chat_history';
 
-// Base de connaissances LCD (RAG Knowledge Base)
-const LCD_KNOWLEDGE = `
-Tu es Chat-LCD, l'assistante IA en ligne de Les Cayes Dropshipping (LCD).
-Tu réponds uniquement aux questions relatives aux services de LCD.
-Si la question ne concerne pas LCD, refuse poliment.
+// ===== KALKIL PWA VOLIMIK + PWA BALANS =====
+window.kalkile = function() {
+    const L = parseFloat(document.getElementById('L')?.value) || 0;
+    const l = parseFloat(document.getElementById('l')?.value) || 0;
+    const H = parseFloat(document.getElementById('H')?.value) || 0;
+    const pwaBalans = parseFloat(document.getElementById('pwa_balans')?.value) || 0;
 
-== INFORMATIONS ESSENTIELLES LCD ==
+    const pwaVolimik = (L * l * H) / 4000;
+    let pwaFinal = pwaVolimik + pwaBalans;
 
-TARIFS :
-- $4.90 par livre (lb) pour tout colis
-- Si le colis dépasse 49 livres (>49 lb), le tarif passe à $3.99 par livre
-- Exemple calcul : 30 lb × $4.90 = $147.00
-- Exemple calcul : 60 lb × $3.99 = $239.40
+    if (pwaFinal > 0) {
+        let tarif = 4.90;
+        if (pwaFinal >= 50) { tarif = 3.99; }
+        const priTotal = pwaFinal * tarif;
+        const dat = new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
 
-ADRESSE USA (pour expédier les achats) :
-14030 NW 5th Pl, North Miami, Florida 33168, États-Unis
-C'est ici que le client envoie ses achats Amazon, Temu, Shein, etc.
+        const pRes = document.getElementById('p_res');
+        const prRes = document.getElementById('pr_res');
+        const tarifRes = document.getElementById('tarif_res');
+        const currentRes = document.getElementById('currentRes');
 
-ADRESSE HAÏTI :
-Suisse Haiti Market, anfas poto elektrik LAM124 (Matinière), Camp-Perrin, Haïti Sud
-
-EMBARQUEMENT (ANBAKMAN) :
-- Nouveau embarquement chaque mois
-- Prochain embarquement : 13 Avril
-- Les colis commandés après l'embarquement attendent le suivant
-
-DISPONIBILITÉ DES COLIS :
-- Statut actuel : EN ATTENTE (AN ATANT)
-- Les colis arrivent après l'embarquement mensuel
-
-RÈGLES ET CONDITIONS IMPORTANTES :
-1. Avant d'acheter et d'envoyer à l'adresse LCD, le client DOIT envoyer une capture d'écran montrant comment il a configuré son adresse sur son compte d'achat (Amazon, Temu, etc.) pour éviter les erreurs
-2. LCD n'est pas responsable des erreurs d'adresse si cette confirmation n'est pas fournie
-3. Le client paie uniquement les frais d'expédition (shipping fees)
-4. LCD achète aussi pour les clients qui n'ont pas de carte bancaire
-5. Livraison dans tout Haïti : Sud, Port-au-Prince, Cap-Haïtien, Jérémie, Ti Gwav, Léogâne
-
-SERVICES OFFERTS :
-- Dropshipping : LCD réceptionne vos achats aux USA et les envoie en Haïti
-- Achats assistés : LCD achète pour vous si vous n'avez pas de carte
-- Service professionnel : outils, matériaux pour artisans, professionnels
-- Service entrepreneur : achats en gros pour revente
-
-CONTACT :
-- WhatsApp : +509 3101 3968
-- Facebook : Les Cayes Dropshipping
-- TikTok : @nextgenacademy4
-
-COMPTE ET APPLICATION :
-- Gratuit à créer
-- Permet de suivre les colis, gérer les transactions, recevoir des alertes
-- Disponible sur mobile (PWA)
-
-MOTS-CLÉS EN CRÉOLE HAÏTIEN :
-- koli = colis/paquet
-- anbakman = embarquement
-- liv = livre (unité de poids)
-- livrezon = livraison
-- pri = prix
-- adrès = adresse
-
-== RESTRICTIONS ==
-Tu ne réponds PAS aux questions sur : la cuisine, la politique, les actualités générales, les autres entreprises, la santé, la religion, ou tout autre sujet non lié à LCD.
-Si quelqu'un pose une telle question, réponds poliment en créole, français ou anglais selon la langue détectée.
-`;
-
-// Détection de langue (simple heuristique)
-function detectLang(text) {
-  const t = text.toLowerCase();
-  // Mots créoles distinctifs
-  const creoleWords = ['mwen', 'koli', 'ou', 'pou', 'nan', 'liv', 'kòb', 'antre', 'ap', 'ki', 'sa', 'anbakman', 'livrezon', 'pri', 'adrès', 'voye', 'achte', 'kijan', 'bwè', 'peye', 'nèg'];
-  const frenchWords  = ['bonjour', 'comment', 'prix', 'livraison', 'colis', 'envoi', 'merci', 'je', 'vous', 'nous', 'est', 'le', 'la', 'les'];
-  const englishWords = ['hello', 'hi', 'how', 'what', 'price', 'shipping', 'package', 'deliver', 'cost', 'when', 'where', 'can', 'do', 'i'];
-
-  let scores = { creole: 0, french: 0, english: 0 };
-  creoleWords.forEach(w => { if (t.includes(w)) scores.creole++; });
-  frenchWords.forEach(w  => { if (t.includes(w)) scores.french++; });
-  englishWords.forEach(w => { if (t.includes(w)) scores.english++; });
-
-  if (scores.creole >= scores.french && scores.creole >= scores.english) return 'creole';
-  if (scores.french >= scores.english) return 'french';
-  return 'english';
-}
-
-// Message de bienvenue selon la langue
-function getCGKWelcome(lang) {
-  if (lang === 'french') return "Bonjour ! Je suis **Chat-LCD**, l'assistante en ligne de Les Cayes Dropshipping. Posez-moi vos questions sur nos tarifs, adresses, livraisons ou services. 📦";
-  if (lang === 'english') return "Hello! I'm **Chat-LCD**, the online assistant of Les Cayes Dropshipping. Ask me about our rates, shipping address, deliveries or services. 📦";
-  return "Alo! Mwen se **Chat-LCD**, asistan anliy Les Cayes Dropshipping. Poze m kesyon w sou tarif, adrès, livrezon oswa sèvis nou yo. 📦";
-}
-
-// Message de refus hors-sujet selon la langue
-function getOutOfScopeMsg(lang) {
-  if (lang === 'french') return "Je suis désolée, je suis spécialisée uniquement dans les services de Les Cayes Dropshipping. Pour cette question, je vous invite à consulter d'autres sources. 🙏";
-  if (lang === 'english') return "Sorry, I only handle questions about Les Cayes Dropshipping services. For this topic, please consult other resources. 🙏";
-  return "Dezole, mwen sèlman ka reponn kesyon sou sèvis Les Cayes Dropshipping. Pou sijè sa, mwen pa ka ede w. 🙏";
-}
-
-// Ouvre ou ferme la fenêtre de chat
-window.toggleChatlcd = function () {
-  const win = document.getElementById('chatlcd-window');
-  if (!win) return;
-
-  if (win.classList.contains('hidden')) {
-    win.classList.remove('hidden');
-    cgkLoadHistory();
-    document.getElementById('chatlcd-notif').style.display = 'none';
-    setTimeout(() => {
-      const input = document.getElementById('cgk-input');
-      if (input) input.focus();
-    }, 100);
-  } else {
-    win.classList.add('hidden');
-  }
-};
-
-window.closeChatlcd = function () {
-  const win = document.getElementById('chatlcd-window');
-  if (win) win.classList.add('hidden');
-};
-
-// Charge l'historique depuis localStorage et affiche un message de bienvenue si vide
-function cgkLoadHistory() {
-  const container = document.getElementById('cgk-messages');
-  if (!container) return;
-
-  const history = JSON.parse(localStorage.getItem(CGK_HISTORY_KEY) || '[]');
-
-  if (history.length === 0) {
-    // Affiche message de bienvenue dans les 3 langues
-    const welcome = "Hello! Mwen se **Chat-LCD**, asistan anliy Les Cayes Dropshipping.\n\nBonjour! Je suis **Chat-LCD**, l'assistante en ligne de Les Cayes Dropshipping.\n\nHello! I'm **Chat-LCD**, LCD's official assistant.\n\nPosez vos questions sur nos tarifs, adresses et services! 📦";
-    cgkAddBubble('bot', welcome, false);
-  } else {
-    container.innerHTML = '';
-    history.forEach(msg => cgkAddBubble(msg.role, msg.content, false));
-  }
-  container.scrollTop = container.scrollHeight;
-}
-
-// Ajoute une bulle de message dans l'interface
-function cgkAddBubble(role, text, save = true) {
-  const container = document.getElementById('cgk-messages');
-  if (!container) return;
-
-  const bubble = document.createElement('div');
-  bubble.className = 'cgk-msg ' + role;
-  // Convertit **gras** en <b>
-  bubble.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
-  container.appendChild(bubble);
-  container.scrollTop = container.scrollHeight;
-
-  if (save) {
-    const history = JSON.parse(localStorage.getItem(CGK_HISTORY_KEY) || '[]');
-    history.push({ role, content: text });
-    // Garde seulement les 50 derniers messages
-    if (history.length > 50) history.splice(0, history.length - 50);
-    localStorage.setItem(CGK_HISTORY_KEY, JSON.stringify(history));
-  }
-}
-
-// Affiche indicateur de frappe
-function cgkShowTyping() {
-  const container = document.getElementById('cgk-messages');
-  if (!container) return null;
-  const el = document.createElement('div');
-  el.className = 'cgk-typing';
-  el.id = 'cgk-typing-indicator';
-  el.innerHTML = '<span></span><span></span><span></span>';
-  container.appendChild(el);
-  container.scrollTop = container.scrollHeight;
-  return el;
-}
-
-function cgkHideTyping() {
-  const el = document.getElementById('cgk-typing-indicator');
-  if (el) el.remove();
-}
-
-// Appel API Claude (Anthropic) pour génération RAG
-async function cgkCallAPI(userMessage, lang) {
-  const systemPrompt = LCD_KNOWLEDGE +
-    '\n\nRègle de langue : L\'utilisateur parle en ' +
-    (lang === 'creole' ? 'créole haïtien' : lang === 'french' ? 'français' : 'anglais') +
-    '. Réponds TOUJOURS dans la même langue que l\'utilisateur. ' +
-    'Si la question ne concerne pas LCD, utilise getOutOfScopeMsg. ' +
-    'Sois concis, amical et professionnel. Max 150 mots par réponse.';
-
-  // Construire historique pour contexte (max 10 derniers échanges)
-  const history = JSON.parse(localStorage.getItem(CGK_HISTORY_KEY) || '[]');
-  const recentHistory = history.slice(-10);
-
-  const messages = recentHistory.map(h => ({
-    role: h.role === 'bot' ? 'assistant' : 'user',
-    content: h.content
-  }));
-  messages.push({ role: 'user', content: userMessage });
-
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 300,
-      system: systemPrompt,
-      messages: messages
-    })
-  });
-
-  if (!response.ok) throw new Error('API error ' + response.status);
-  const data = await response.json();
-  return data.content && data.content[0] ? data.content[0].text : '...';
-}
-
-// Envoie un message utilisateur et obtient la réponse de l'IA
-window.sendChatlcd = async function () {
-  const input  = document.getElementById('cgk-input');
-  const sendBtn = document.getElementById('cgk-send-btn');
-  if (!input) return;
-
-  const text = input.value.trim();
-  if (!text) return;
-
-  const lang = detectLang(text);
-
-  // Désactive le bouton pendant le traitement
-  if (sendBtn) sendBtn.disabled = true;
-  input.value = '';
-  input.disabled = true;
-
-  // Affiche le message de l'utilisateur
-  cgkAddBubble('user', text);
-
-  // Affiche l'indicateur de frappe
-  cgkShowTyping();
-
-  try {
-    const reply = await cgkCallAPI(text, lang);
-    cgkHideTyping();
-    cgkAddBubble('bot', reply);
-  } catch (err) {
-    cgkHideTyping();
-    // Message d'erreur selon la langue
-    const errMsg = lang === 'french'
-      ? "Désolée, je rencontre un problème de connexion. Veuillez réessayer dans un moment."
-      : lang === 'english'
-      ? "Sorry, I'm having a connection issue. Please try again in a moment."
-      : "Eskize, sanble gen yon pwoblèm koneksyon. Tanpri, verifye nèt ou e eseye ankò.";
-    cgkAddBubble('bot', errMsg);
-    console.error('Chatlcd API error:', err);
-  }
-
-  // Réactive la saisie
-  if (sendBtn) sendBtn.disabled = false;
-  input.disabled = false;
-  input.focus();
+        if (pRes) pRes.innerText = pwaFinal.toFixed(2) + " lb";
+        if (prRes) prRes.innerText = priTotal.toFixed(2);
+        if (tarifRes) tarifRes.innerText = "Tarif: $" + tarif + "/lb";
+        if (currentRes) currentRes.style.display = 'block';
+        if (typeof addHistory === 'function') addHistory(pwaFinal.toFixed(2), priTotal.toFixed(2), dat);
+    }
 };
 
 // ===== INICIALIZASYON JENERAL LÈ PAJ LA CHAJE =====
@@ -795,20 +559,47 @@ document.addEventListener('DOMContentLoaded', () => {
     if (registerCTA) registerCTA.classList.add('hidden');
   }
 
-  // 3. Submit fòm enskripsyon (une seule fois)
+  // 3. Submit fòm enskripsyon — Profil konplè + Web3Forms
   if (regForm) {
-    regForm.addEventListener('submit', (e) => {
+    regForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const emailVal = document.getElementById('reg-email');
-      if (emailVal && emailVal.value.trim()) {
-        // Sove imèl la san efase lòt done yo
-        let profile = JSON.parse(localStorage.getItem('user_profile_data') || '{}');
-        if (!profile.email) {
-          profile.email = emailVal.value.trim();
-          localStorage.setItem('user_profile_data', JSON.stringify(profile));
-        }
-      }
+
+      const nomVal       = (document.getElementById('reg-nom')?.value || '').trim();
+      const emailVal     = (document.getElementById('reg-email')?.value || '').trim();
+      const telVal       = (document.getElementById('reg-telephone')?.value || '').trim();
+      const adressVal    = (document.getElementById('reg-address')?.value || '').trim();
+      const refVal       = (document.getElementById('reg-reference')?.value || '').trim();
+
+      if (!nomVal || !emailVal || !telVal || !adressVal || !refVal) return;
+
+      // Sove pwofil konplè nan Kont (localStorage)
+      let profile = JSON.parse(localStorage.getItem('user_profile_data') || '{}');
+      profile.nom       = nomVal;
+      profile.email     = emailVal;
+      profile.telephone = telVal;
+      profile.address   = adressVal;
+      profile.reference = refVal;
+      localStorage.setItem('user_profile_data', JSON.stringify(profile));
       localStorage.setItem('lcd_user_registered', 'true');
+
+      // Voye done yo sou Web3Forms (asenkwòn, pa bloke UI)
+      try {
+        await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: '2ded0ed8-8bdb-4249-b804-ee4e27c06e8d',
+            subject: 'Nouvo kont LCD — ' + nomVal,
+            from_name: 'Les Cayes Dropshipping App',
+            nom: nomVal,
+            email: emailVal,
+            telephone: telVal,
+            adresse: adressVal,
+            reference: refVal
+          })
+        });
+      } catch(err) { console.log('Web3Forms err:', err); }
+
       hideLoginOverlay();
       refreshTopBar();
     });
@@ -842,11 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newBadge.style.display = 'none';
   }
 
-  // 6. Cache splash screen apre 1.5 sekonn
-  setTimeout(() => {
-    const splash = document.getElementById('splash-screen');
-    if (splash) splash.style.display = 'none';
-  }, 1500);
+  // 6. (Splash screen de retour supprimé)
 
   // 7. Sistèm Like
   initLikeSystem();

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkilatris Pwa ak Pri - Les Cayes Dropshipping</title>
+    <title>Kontwolè pwa ak pri - Les Cayes Dropshipping</title>
     <style>
         :root {
             /* Palette de couleurs harmonisée */
@@ -121,16 +121,50 @@
             border-radius: 20px; font-size: 0.75rem; font-weight: 800;
         }
 
-        /* Istorik */
-        .history-area { width: 100%; max-width: 450px; margin-top: 30px; }
-        .history-title { font-weight: 900; margin-bottom: 15px; color: var(--bleu-marin); font-size: 0.9rem; text-transform: uppercase; }
-        
-        .history-card {
-            background: white; padding: 15px; border-radius: 15px;
-            margin-bottom: 12px; display: flex; justify-content: space-between;
-            align-items: center; box-shadow: 0 3px 6px rgba(0,0,0,0.03);
-            border-left: 6px solid var(--vert-kaki);
-        }
+/* ── DESIGN ISTORIK ── */
+.history-area { 
+    width: 100%; 
+    max-width: 450px; 
+    margin-top: 30px; 
+}
+
+.history-title { 
+    font-weight: 900; 
+    margin-bottom: 15px; 
+    color: var(--bleu-marin); 
+    font-size: 0.85rem; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    opacity: 0.7;
+}
+
+.history-card {
+    background: #ffffff; 
+    padding: 16px; 
+    border-radius: 16px;
+    margin-bottom: 10px; 
+    display: flex; 
+    justify-content: space-between;
+    align-items: center; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Ombre plus douce */
+    border: 1px solid rgba(0,0,0,0.03); /* Bordure très fine au lieu de la barre */
+    transition: transform 0.2s ease;
+}
+
+.history-card:active {
+    transform: scale(0.98); /* Petit effet au clic sur téléphone */
+}
+
+/* Style pour le montant à droite */
+.hist-val {
+    background: rgba(0, 31, 63, 0.05); /* Fond léger bleu marin */
+    color: var(--bleu-marin);
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: 900;
+    font-size: 1rem;
+}
+
 
         .hist-val { font-weight: 900; color: var(--vert-kaki); font-size: 1.1rem; }
     </style>
@@ -139,7 +173,7 @@
 
 <div class="container">
     <div class="header">
-        <h2>Kalkil Kolis LCD</h2>
+        <h2>Kalkil koli LCD</h2>
     </div>
 
     <div class="form-section">
@@ -154,7 +188,7 @@
             <input type="number" id="pwa_balans" placeholder="0.00">
         </div>
 
-        <button onclick="kalkile()">Kalkile Pri a kounye a</button>
+        <button onclick="kalkile()">Kalkile pri a kounya</button>
         <button class="btn-clear" onclick="resetAll()">Efase kalkil sa</button>
 
         <div id="currentRes" class="current-res">
