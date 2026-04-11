@@ -1,6 +1,16 @@
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
+// ── Guard : ne pas initialiser si le contexte n'est pas sécurisé ──
+// (Les Service Workers ne s'enregistrent que sur HTTPS ou localhost,
+//  ce bloc est une sécurité supplémentaire au cas où.)
+if (!(self.location.protocol === 'https:' ||
+      self.location.hostname === 'localhost' ||
+      self.location.hostname === '127.0.0.1')) {
+  // Contexte non sécurisé : on stoppe silencieusement
+  throw new Error('Firebase SW : contexte non sécurisé, initialisation annulée.');
+}
+
 const firebaseConfig = {
   apiKey: "AIzaSyClITNBRZPS7uCGFtbCvcW3CE-KH3VHOyI",
   authDomain: "les-cayes-dropshipping.firebaseapp.com",

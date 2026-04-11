@@ -34,8 +34,8 @@ body {
   font-family: 'Poppins', 'Nunito', sans-serif;
   background: #f8f9fa;
   color: var(--texte);
-  /* espace pour announcement bar + top bar */
-  padding-top: calc(var(--annonce-h) + var(--top-bar-h));
+  /* espace pour top bar uniquement — announcement bar est en dessous */
+  padding-top: var(--top-bar-h);
 }
 
 .hidden { display: none !important; }
@@ -162,13 +162,13 @@ body {
 
 #btn-submit:active { transform: scale(0.97); }
 
-/* ── ANNOUNCEMENT BAR fixée tout en haut ── */
+/* ── ANNOUNCEMENT BAR — fixée sous la top bar ── */
 .announcement-bar-fixed {
   position: fixed !important;
-  top: 0;
+  top: var(--top-bar-h);
   left: 0;
   right: 0;
-  z-index: 650;
+  z-index: 590;
   background-color: var(--bleu-marin);
   color: var(--blanc-fond);
   overflow: hidden;
@@ -209,10 +209,10 @@ body {
   animation-play-state: paused;
 }
 
-/* ── TOP BAR — positionné sous l'annonce ── */
+/* ── TOP BAR — fixé tout en haut ── */
 #top-bar {
   position: fixed;
-  top: var(--annonce-h);
+  top: 0;
   left: 0; right: 0;
   height: var(--top-bar-h);
   background: var(--white);

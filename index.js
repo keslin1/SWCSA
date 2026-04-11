@@ -16,7 +16,13 @@ window.goTo = function (url) {
   setTimeout(function () { window.location.href = url; }, 480);
 };
 
+// Masquer le loader au chargement ET au retour arrière (bfcache)
 window.addEventListener('load', function () {
+  var loader = document.getElementById('page-loader');
+  if (loader) loader.classList.remove('show');
+});
+
+window.addEventListener('pageshow', function (e) {
   var loader = document.getElementById('page-loader');
   if (loader) loader.classList.remove('show');
 });
@@ -210,7 +216,7 @@ function initLikeSystem() {
       clearInterval(counter);
       if (userHasLiked && likeIcon) {
         likeIcon.textContent = 'thumb_up';
-        likeIcon.style.color = '#5D4037';
+        likeIcon.style.color = '#0074D9';
       }
     }
   }, interval);
@@ -226,7 +232,7 @@ window.toggleLike = function () {
     if (sound) { sound.currentTime = 0; sound.play(); }
     if (likeIcon) {
       likeIcon.textContent     = 'thumb_up';
-      likeIcon.style.color     = '#5D4037';
+      likeIcon.style.color     = '#0074D9';
       likeIcon.style.transform = 'scale(1.3)';
       setTimeout(function () { likeIcon.style.transform = 'scale(1)'; }, 200);
     }

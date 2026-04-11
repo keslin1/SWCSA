@@ -90,13 +90,6 @@
   </div>
 </div>
 
-<!-- ===== ANNOUNCEMENT BAR — tout en haut fixé ===== -->
-<div class="announcement-bar announcement-bar-fixed">
-    <div class="scrolling-text">
-        Tanpri avan w achte kwakseswa voye nan adrès nou, ou dwe share kaptidekran fason w konfigire adrès lan sou kont ou pou evite erè ak dezagreman nan sèvis lan!
-    </div>
-</div>
-
 <!-- ===== BANNER ENSTALE — affiche après 30s si pas installé ===== -->
 <div id="install-banner" class="hidden install-blink">
   <div class="install-info">
@@ -121,7 +114,12 @@
   </button>
 </header>
 
-<!-- ===== DRAWER OVERLAY ===== -->
+<!-- ===== ANNOUNCEMENT BAR — sous la top bar ===== -->
+<div class="announcement-bar announcement-bar-fixed">
+    <div class="scrolling-text">
+        Tanpri avan w achte kwakseswa voye nan adrès nou, ou dwe share kaptidekran fason w konfigire adrès lan sou kont ou pou evite erè ak dezagreman nan sèvis lan!
+    </div>
+</div>
 <div id="drawer-overlay" onclick="closeDrawer()"></div>
 
 <!-- ===== SIDE DRAWER ===== -->
@@ -141,30 +139,30 @@
     <div class="drw-section-lbl">Navigation</div>
     <a class="drw-item active" onclick="goTo('index.html')">
       <span class="drw-icon"><span class="material-icons">home</span></span>
-      <span class="drw-label">AKÈY</span>
+      <span class="drw-label">Akèy</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
 
     <!-- KIYÈS X YE — visible seulement si profil existe, SANS page-loader -->
     <a class="drw-item drw-item-kiyès" id="drw-kiyès" onclick="allerPwofil()" style="display:none;">
       <span class="drw-icon drw-icon-kiyès"><span class="material-icons">manage_accounts</span></span>
-      <span class="drw-label" id="drw-kiyès-label">KIYÈS mwen YE</span>
+      <span class="drw-label" id="drw-kiyès-label">Kiyès mwen ye</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
 
     <a class="drw-item" onclick="goTo('calcul.html')">
       <span class="drw-icon"><span class="material-icons">calculate</span></span>
-      <span class="drw-label">KALKILE PRI KOLI M</span>
+      <span class="drw-label">Kalkile pri koli m</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
     <a class="drw-item" onclick="goTo('inventaire.html')">
       <span class="drw-icon"><span class="material-icons">inventory_2</span></span>
-      <span class="drw-label">FÈ ENVANTÈ ATIK MWEN</span>
+      <span class="drw-label">Fè envantè atik mwen</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
     <a class="drw-item" onclick="goTo('transaction.html')">
       <span class="drw-icon"><span class="material-icons">account_balance_wallet</span></span>
-      <span class="drw-label">MONNEN M NAN SÈVIS LA</span>
+      <span class="drw-label">Monnen m nan sèvis la</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
 
@@ -172,12 +170,12 @@
     <div class="drw-section-lbl">Lòt Paj</div>
     <a class="drw-item" onclick="goTo('decouvrir.html')">
       <span class="drw-icon"><span class="material-icons">info</span></span>
-      <span class="drw-label">RÈG AK KONDISYON</span>
+      <span class="drw-label">Règ ak kondisyon</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
     <a class="drw-item" onclick="goTo('moncompte.html')">
       <span class="drw-icon"><span class="material-icons">person</span></span>
-      <span class="drw-label">PWOFIL MWEN</span>
+      <span class="drw-label">Pwofil mwen</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
 
@@ -363,7 +361,10 @@
     import { getAnalytics }                      from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
     import { getAuth, onAuthStateChanged }       from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+    import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+    // ── Vérification HTTPS / localhost avant tout init Firebase Messaging ──
+    const isSecureContext = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
     const firebaseConfig = {
         apiKey:            "AIzaSyClITNBRZPS7uCGFtbCvcW3CE-KH3VHOyI",
@@ -379,7 +380,19 @@
     const analytics = getAnalytics(app);
     const auth      = getAuth(app);
     const db        = getFirestore(app);
-    const messaging = getMessaging(app);
+
+    // ── Messaging : seulement si HTTPS ET navigateur compatible ──
+    let messaging = null;
+    if (isSecureContext) {
+        try {
+            const supported = await isSupported();
+            if (supported) {
+                messaging = getMessaging(app);
+            }
+        } catch (e) {
+            console.warn('Firebase Messaging non disponible :', e);
+        }
+    }
 
     function saveMessage(title, body) {
         const KEY = 'lcd_user_messages';
@@ -443,14 +456,17 @@
         }
     });
 
-    onMessage(messaging, (payload) => {
-        const { title, body } = payload.notification;
-        saveMessage(title, body);
-        const notif = new Notification(title, { body, icon: "/lescayesdropshipping.png" });
-        notif.onclick = (e) => { e.preventDefault(); window.location.href = "moncompte.html?tab=mesaj"; };
-    });
+    if (messaging) {
+        onMessage(messaging, (payload) => {
+            const { title, body } = payload.notification;
+            saveMessage(title, body);
+            const notif = new Notification(title, { body, icon: "/lescayesdropshipping.png" });
+            notif.onclick = (e) => { e.preventDefault(); window.location.href = "moncompte.html?tab=mesaj"; };
+        });
+    }
 
     async function initNotifications() {
+        if (!messaging) return;
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
             try {
@@ -459,7 +475,7 @@
         }
     }
 
-    if ('serviceWorker' in navigator) {
+    if (isSecureContext && 'serviceWorker' in navigator) {
         navigator.serviceWorker.register('/firebase-messaging-sw.js')
             .then(() => { initNotifications(); })
             .catch(err => console.log('Erreur SW:', err));
@@ -582,7 +598,7 @@
         item.style.display = 'flex';
         if (label && nom) {
             const prenom = nom.trim().split(' ')[0];
-            label.textContent = 'KIYÈS ' + prenom.toUpperCase() + ' YE';
+            label.textContent = 'Kiyès ' + prenom.toUpperCase() + ' ye';
         }
     };
 
