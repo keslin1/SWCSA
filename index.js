@@ -1,14 +1,10 @@
 // ===============================================================
-//  index.js — Les Cayes Dropshipping v2.0
+//  index.js — Les Cayes Dropshipping v2.1
 //  Lojik JavaScript pou paj dakèy (index.html)
-//  Compatible : Firebase Auth (index.html), formulaire progressif,
-//               Web3Forms, A2HS, Avis kliyan, Carousel, Like
-//  PRESÈVE : lcd_user_balance, lcd_epargne_montant, trading
 // ===============================================================
 
 'use strict';
 
-// ── CONSTANTES ──────────────────────────────────────────────────
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
 let   baseLikes      = 52;
@@ -43,7 +39,7 @@ window.closeDrawer = function () {
   document.body.style.overflow = '';
 };
 
-// Swipe gesture pou ouvri/fèmen drawer
+// Swipe gesture
 (function () {
   var sx = 0;
   document.addEventListener('touchstart', function (e) {
@@ -59,7 +55,7 @@ window.closeDrawer = function () {
   }, { passive: true });
 })();
 
-// Synchronise drawer ak profil itilizatè (localStorage)
+// Sync drawer avec profil localStorage
 function syncDrw() {
   var p = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
   var n = document.getElementById('drw-nom');
@@ -68,9 +64,7 @@ function syncDrw() {
 
   if (n) {
     var nm = (p.nom || '').trim();
-    n.textContent = nm
-      ? (nm.length > 20 ? nm.substring(0, 18) + '...' : nm)
-      : 'Les Cayes Dropshipping';
+    n.textContent = nm ? (nm.length > 20 ? nm.substring(0, 18) + '...' : nm) : 'Les Cayes Dropshipping';
   }
   if (l) {
     l.textContent = p.address
@@ -86,23 +80,10 @@ function syncDrw() {
   }
 }
 
-// ── TOP BAR : non ak vil itilizatè ──────────────────────────────
+// ── TOP BAR : titre fixe "Les Cayes Drop..." ──────────────────
 function refreshTopBar() {
-  var profile = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
   var titleEl = document.getElementById('top-bar-title');
-  if (!titleEl) return;
-
-  var nom    = (profile.nom     || '').trim();
-  var adress = (profile.address || '').trim();
-
-  if (nom) {
-    var vilAff = adress ? ' · ' + adress.split(',')[0].split(' ')[0] : '';
-    titleEl.textContent = nom.length > 14
-      ? nom.substring(0, 12) + '...' + vilAff
-      : nom + vilAff;
-  } else {
-    titleEl.textContent = 'Les Cayes Drop...';
-  }
+  if (titleEl) titleEl.textContent = 'Les Cayes Drop...';
 
   // Avatar photo si disponib
   var topLogo = document.getElementById('top-bar-logo');
@@ -116,21 +97,31 @@ function refreshTopBar() {
   }
 }
 
+// ── KIYÈS X YE — afficher dans le drawer ──────────────────────
+window.initKiyesDrawer = function (nom) {
+  var item  = document.getElementById('drw-kiyès');
+  var label = document.getElementById('drw-kiyès-label');
+  if (!item) return;
+  item.style.display = 'flex';
+  if (label && nom) {
+    var prenom = nom.trim().split(' ')[0];
+    label.textContent = 'KIYÈS ' + prenom.toUpperCase() + ' YE';
+  }
+};
+
+// Navigation vers pwofil.html SANS page-loader
+window.allerPwofil = function () {
+  window.closeDrawer();
+  window.location.href = 'pwofil.html';
+};
+
 // ── LOGOUT ──────────────────────────────────────────────────────
-// NOTE : Pa efase trading, lcd_user_balance, lcd_epargne_montant
 window.logOut = function () {
   if (!confirm('Dekonekte?')) return;
   localStorage.removeItem('lcd_user_registered');
   localStorage.removeItem(userStorageKey);
   window.closeDrawer();
   window.location.reload();
-};
-
-// ── OVERLAY ENSKRIPSYON (CTA bouton sèlman) ─────────────────────
-// Lojik prensipal overlay jere pa Firebase Auth nan index.html
-window.showRegistrationOverlay = function () {
-  var ov = document.getElementById('registration-overlay');
-  if (ov) ov.style.display = 'flex';
 };
 
 // ── BADGES NOTIFIKASYON ──────────────────────────────────────────
@@ -147,10 +138,9 @@ function updateNotifBadges() {
     }
   } catch (e) {}
 }
-// Expose pou Firebase module (index.html)
 window.updateNotifBadges = updateNotifBadges;
 
-// ── HEADER (non + vil) ───────────────────────────────────────────
+// ── HEADER secondaire ─────────────────────────────────────────
 function refreshHeader() {
   var profile  = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
   var nameElem = document.getElementById('user-display-name');
@@ -173,7 +163,7 @@ function refreshHeader() {
   }
 }
 
-// ── GESTION NOTIFICATIONS ────────────────────────────────────────
+// ── NOTIFICATIONS ────────────────────────────────────────────────
 window.requestPermission = function () {
   if (!('Notification' in window)) {
     alert('Navigatè sa a pa sipòte notifikasyon.');
@@ -184,9 +174,8 @@ window.requestPermission = function () {
       localStorage.setItem('notif_accepted', 'true');
       femenModalNotif();
       new Notification('Sistèm Aktive ✅', {
-        body:  'Ou kapab resevwa mesaj Les Cayes Dropshipping yo kounya.',
-        icon:  '/lescayesdropshipping.png',
-        badge: '/lescayesdropshipping.png'
+        body: 'Ou kapab resevwa mesaj Les Cayes Dropshipping yo kounya.',
+        icon: '/lescayesdropshipping.png'
       });
     } else {
       window.refuseAccess();
@@ -253,14 +242,37 @@ window.toggleLike = function () {
   }
 };
 
+window.toggleUnlike = function () {
+  var unlikeIcon = document.getElementById('unlike-icon');
+  var isUnliked  = localStorage.getItem('user_has_unliked') === 'true';
+
+  if (!isUnliked) {
+    if (unlikeIcon) {
+      unlikeIcon.textContent = 'thumb_down';
+      unlikeIcon.style.color = '#e74c3c';
+    }
+    localStorage.setItem('user_has_unliked', 'true');
+    // Annuler le like si actif
+    if (localStorage.getItem('user_has_liked') === 'true') {
+      window.toggleLike();
+    }
+  } else {
+    if (unlikeIcon) {
+      unlikeIcon.textContent = 'thumb_down_off_alt';
+      unlikeIcon.style.color = '';
+    }
+    localStorage.setItem('user_has_unliked', 'false');
+  }
+};
+
 // ── CAROUSEL BANNER ──────────────────────────────────────────────
 function initBannerCarousel() {
   var carousel  = document.getElementById('banner-carousel');
   var container = carousel ? carousel.querySelector('.carousel-container') : null;
   if (!carousel || !container) return;
 
-  var items        = container.querySelectorAll('.carousel-item');
-  var totalItems   = items.length;
+  var items      = container.querySelectorAll('.carousel-item');
+  var totalItems = items.length;
   var scrollAmount = 0;
 
   setInterval(function () {
@@ -318,13 +330,13 @@ function formatDateRelative(timestamp) {
 }
 
 var simulationAvis = [
-  { id: 101, non: "Valpare B.",     stars: 5, text: "impotan pou biznis mw, psk ak ansyen transpo an m patka rantre kob m envesti yo.",                                                        publishedAt: getRefDate(3) },
-  { id: 102, non: "Claire Suze D.", stars: 5, text: "Pinga warehouse sa vin bay pwob nn mesye Thomas!",                                                                                         publishedAt: getRefDate(1) },
-  { id: 103, non: "Steeve P.",      stars: 4, text: "m swete aprè 4,90 lan pa gen lòt frè, bon bgy.",                                                                                           publishedAt: getRefDate(5) },
-  { id: 104, non: "Samuel H.",      stars: 5, text: "Ou konn sa wap f an mister Thomas, nou avèw 👍. Livrezon an yon ti jan long, men nap avanse brother.",                                     publishedAt: getRefDate(0, 45) },
-  { id: 105, non: "Laika V.",       stars: 4, text: "Ebyen gen espwa pou store mwen an la 😂🤣.",                                                                                                publishedAt: getRefDate(21) },
-  { id: 106, non: "Tania S.",       stars: 2, text: "Nanpwen anak, asistans red red. Machandiz mw rive an plizye okazyon, men yo rive san manke anyen.",                                        publishedAt: getRefDate(59) },
-  { id: 107, non: "Ricardo J.",     stars: 1, text: "Okazyn chak mwa sèlman ki pwoblm pu mw, men pou pri a, sekirite; pa gen plenyen.",                                                         publishedAt: getRefDate(2) }
+  { id: 101, non: "Valpare B.",     stars: 5, text: "impotan pou biznis mw, psk ak ansyen transpo an m patka rantre kob m envesti yo.",                                    publishedAt: getRefDate(3) },
+  { id: 102, non: "Claire Suze D.", stars: 5, text: "Pinga warehouse sa vin bay pwob nn mesye Thomas!",                                                                    publishedAt: getRefDate(1) },
+  { id: 103, non: "Steeve P.",      stars: 4, text: "m swete aprè 4,90 lan pa gen lòt frè, bon bgy.",                                                                      publishedAt: getRefDate(5) },
+  { id: 104, non: "Samuel H.",      stars: 5, text: "Ou konn sa wap f an mister Thomas, nou avèw 👍. Livrezon an yon ti jan long, men nap avanse brother.",               publishedAt: getRefDate(0, 45) },
+  { id: 105, non: "Laika V.",       stars: 4, text: "Ebyen gen espwa pou store mwen an la 😂🤣.",                                                                           publishedAt: getRefDate(21) },
+  { id: 106, non: "Tania S.",       stars: 2, text: "Nanpwen anak, asistans red red. Machandiz mw rive an plizye okazyon, men yo rive san manke anyen.",                   publishedAt: getRefDate(59) },
+  { id: 107, non: "Ricardo J.",     stars: 1, text: "Okazyn chak mwa sèlman ki pwoblm pu mw, men pou pri a, sekirite; pa gen plenyen.",                                    publishedAt: getRefDate(2) }
 ];
 
 function buildStars(avisId, currentStars, isInteractive) {
@@ -392,11 +404,11 @@ function aficheAvis() {
   var toutAvis  = localAvis.concat(simulationAvis);
 
   container.innerHTML = toutAvis.map(function (a) {
-    var isUser        = localAvis.some(function (la) { return la.id === a.id; });
-    var starsAffiche  = votes[a.id] !== undefined ? votes[a.id] : (a.stars || 0);
-    var dateAffiche   = formatDateRelative(a.publishedAt || a.id);
-    var starsHTML     = buildStars(a.id, starsAffiche, true);
-    var initials      = getInitials(a.non);
+    var isUser       = localAvis.some(function (la) { return la.id === a.id; });
+    var starsAffiche = votes[a.id] !== undefined ? votes[a.id] : (a.stars || 0);
+    var dateAffiche  = formatDateRelative(a.publishedAt || a.id);
+    var starsHTML    = buildStars(a.id, starsAffiche, true);
+    var initials     = getInitials(a.non);
 
     return '<div class="comment-card" id="comment-' + a.id + '">'
       + '<div class="comment-author">'
@@ -462,7 +474,7 @@ window.effacerAvis = function (id) {
   aficheAvis();
 };
 
-// ── INVENTÈ (compat pou lòt paj) ────────────────────────────────
+// ── INVENTÈ ─────────────────────────────────────────────────────
 var INV_KEY = 'lcd_inventaire';
 
 function invLoad() { return JSON.parse(localStorage.getItem(INV_KEY) || '[]'); }
@@ -543,8 +555,8 @@ window.invAdd = function () {
 };
 
 window.invEdit = function (id) {
-  var items  = invLoad();
-  var item   = items.find(function (it) { return it.id === id; });
+  var items   = invLoad();
+  var item    = items.find(function (it) { return it.id === id; });
   if (!item) return;
   var nomEl   = document.getElementById('inv-nom');
   var trackEl = document.getElementById('inv-tracking');
@@ -605,7 +617,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // 2. Systèm Like
   initLikeSystem();
 
-  // 3. Top bar (non + vil) + Header secondaire
+  // 3. Top bar fixe
   refreshTopBar();
   refreshHeader();
 
@@ -618,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // 6. Carousel
   initBannerCarousel();
 
-  // 7. Modal notifikasyon (si pa deja accepté)
+  // 7. Modal notifikasyon
   var dejaAksepte    = localStorage.getItem('notif_accepted');
   var pèmisyonSistèm = (typeof Notification !== 'undefined') ? Notification.permission : 'default';
   if (pèmisyonSistèm === 'granted' || dejaAksepte === 'true') {
@@ -631,13 +643,27 @@ document.addEventListener('DOMContentLoaded', function () {
   // 8. Sync drawer
   syncDrw();
 
-  // 9. Badge cloche (dot) depuis localStorage
+  // 9. Badge cloche
   var msgs   = JSON.parse(localStorage.getItem(MESSAGE_KEY) || '[]');
   var unread = msgs.filter(function (m) { return !m.read; }).length;
   var dot    = document.getElementById('tb-dot');
   if (dot) dot.style.display = unread > 0 ? 'block' : 'none';
 
-  // 10. Écoute Service Worker pour les notifications push
+  // 10. Kiyès drawer — si profil existant
+  var profile = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
+  if (profile.nom) {
+    window.initKiyesDrawer(profile.nom);
+  }
+
+  // 11. Unlike — rétablir état
+  var isUnliked  = localStorage.getItem('user_has_unliked') === 'true';
+  var unlikeIcon = document.getElementById('unlike-icon');
+  if (isUnliked && unlikeIcon) {
+    unlikeIcon.textContent = 'thumb_down';
+    unlikeIcon.style.color = '#e74c3c';
+  }
+
+  // 12. Service Worker notifications push
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('message', function (event) {
       if (event.data && event.data.type === 'SAVE_NOTIF') {
