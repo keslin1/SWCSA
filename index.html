@@ -1,4 +1,3 @@
-  <!-- mizajou v2.0 — Chat-LCD, Avis Kliyan, Branding -->
 <!DOCTYPE html>
 <html lang="ht">
 <head>
@@ -6,20 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate" />
-    <title>Akèy - Les Cayes Dropshipping</title>
+    <title>Les Cayes Dropshipping</title>
 
-    <!-- Fonts & Icônes externes -->
     <link rel="stylesheet" href="base.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- html2canvas pou telechajman inventè -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-    <!-- Fich CSS paj dakèy la -->
     <link rel="stylesheet" href="index.css">
 
-    <!-- Manifest & PWA -->
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-title" content="LCDrop">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -28,11 +21,10 @@
 </head>
 <body>
 
-<!-- ===== PAGE LOADER ===== -->
+<!-- ===== PAGE LOADER (transition entre pages — sans logo rotatif) ===== -->
 <div id="page-loader">
   <div class="pl-inner">
     <div class="pl-ring"></div>
-    <img src="/lescayesdropshipping.png" alt="LCD" class="pl-logo">
   </div>
 </div>
 
@@ -42,45 +34,72 @@
     <img src="lescayesdropshipping.png" alt="Les Cayes Dropshipping" class="logo-main">
     <h2>Byenvini</h2>
     <p>Ranpli pwofil ou pou w kòmanse ak sèvis la.</p>
-    
+
+    <!-- Indicateur de progression -->
+    <div id="form-progress-bar" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+      <div style="flex:1; height:4px; background:#eee; border-radius:4px; overflow:hidden; margin-right:10px;">
+        <div id="progress-fill" style="height:100%; background:var(--bleu-marin); border-radius:4px; transition:width 0.4s ease; width:20%;"></div>
+      </div>
+      <span id="progress-label" style="font-size:12px; font-weight:700; color:var(--bleu-marin); white-space:nowrap;">1 / 5</span>
+    </div>
+
     <form id="registration-form">
-      <div class="input-container">
-        <span class="material-icons">person</span>
-        <input type="text" id="reg-nom" placeholder="Non konplè (pou livrezon)" required>
+
+      <!-- Étape 1 : Nom -->
+      <div class="reg-step" id="step-1">
+        <div class="input-container">
+          <span class="material-icons">person</span>
+          <input type="text" id="reg-nom" placeholder="Non konplè (pou livrezon)" autocomplete="name">
+        </div>
+        <button type="button" class="btn-next" onclick="regNext(1)">Kontinye →</button>
       </div>
-      
-      <div class="input-container">
-        <span class="material-icons">email</span>
-        <input type="email" id="reg-email" placeholder="Adrès imèl (obligatwa)" required>
+
+      <!-- Étape 2 : Email -->
+      <div class="reg-step" id="step-2" style="display:none;">
+        <div class="input-container">
+          <span class="material-icons">email</span>
+          <input type="email" id="reg-email" placeholder="Adrès imèl (obligatwa)" autocomplete="email">
+        </div>
+        <button type="button" class="btn-next" onclick="regNext(2)">Kontinye →</button>
       </div>
-      
-      <div class="input-container">
-        <span class="material-icons">phone</span>
-        <input type="tel" id="reg-phone" placeholder="Telefòn Whatsapp (+509...)" required>
+
+      <!-- Étape 3 : Téléphone -->
+      <div class="reg-step" id="step-3" style="display:none;">
+        <div class="input-container">
+          <span class="material-icons">phone</span>
+          <input type="tel" id="reg-phone" placeholder="Telefòn Whatsapp (+509...)" autocomplete="tel">
+        </div>
+        <button type="button" class="btn-next" onclick="regNext(3)">Kontinye →</button>
       </div>
-      
-      <div class="input-container">
-        <span class="material-icons">location_on</span>
-        <input type="text" id="reg-address" placeholder="Adrès detaye (Simon, etc.)" required>
+
+      <!-- Étape 4 : Adresse -->
+      <div class="reg-step" id="step-4" style="display:none;">
+        <div class="input-container">
+          <span class="material-icons">location_on</span>
+          <input type="text" id="reg-address" placeholder="Adrès detaye (Simon, etc.)" autocomplete="street-address">
+        </div>
+        <button type="button" class="btn-next" onclick="regNext(4)">Kontinye →</button>
       </div>
-      
-      <div class="input-container">
-        <span class="material-icons">explore</span>
-        <select id="reg-reference" required style="width: 100%; border:none; background:transparent; outline:none; font-size:15px; color:#555;">
+
+      <!-- Étape 5 : Référence + champ conditionnel WhatsApp -->
+      <div class="reg-step" id="step-5" style="display:none;">
+        <div class="input-container">
+          <span class="material-icons">explore</span>
+          <select id="reg-reference" style="width:100%;border:none;background:transparent;outline:none;font-size:15px;color:#555;" onchange="toggleReferant()">
             <option value="">Kijan w konnen nou?</option>
             <option value="Facebook">Facebook</option>
             <option value="TikTok">TikTok</option>
             <option value="WhatsApp">Yon zanmi (WhatsApp)</option>
             <option value="IA">Intelligence Artificielle</option>
-        </select>
+          </select>
+        </div>
+        <div id="referant-container" style="display:none;" class="input-container">
+          <span class="material-icons">groups</span>
+          <input type="text" id="reg-referant-name" placeholder="Non moun ki refere-w la">
+        </div>
+        <button type="submit" id="btn-submit">Kreye Kont Mwen →</button>
       </div>
 
-      <div id="referant-container" style="display:none;" class="input-container">
-        <span class="material-icons">groups</span>
-        <input type="text" id="reg-referant-name" placeholder="Non moun ki refere-w la">
-      </div>
-
-      <button type="submit" id="btn-submit">Kreye Kont Mwen →</button>
     </form>
   </div>
 </div>
@@ -101,12 +120,11 @@
   </button>
   <div id="top-bar-brand">
     <img src="lescayesdropshipping.png" alt="LCD" id="top-bar-logo">
-    <!-- Si itilizatè a konekte, non ak adrès li a afiche isit -->
     <span id="top-bar-title">Les Cayes Drop...</span>
   </div>
   <button id="top-bar-bell" onclick="goTo('moncompte.html')">
     <span class="material-icons">notifications</span>
-    <span class="tb-notif-dot" id="tb-dot"></span>
+    <span class="tb-notif-dot" id="tb-dot" style="display:none;"></span>
   </button>
 </header>
 
@@ -138,7 +156,6 @@
       <span class="drw-label">KALKILE PRI KOLI M</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
-    <!-- Envantè kounye a se yon paj endepandan -->
     <a class="drw-item" onclick="goTo('inventaire.html')">
       <span class="drw-icon"><span class="material-icons">inventory_2</span></span>
       <span class="drw-label">FÈ ENVANTÈ ATIK MWEN</span>
@@ -166,8 +183,8 @@
     <div class="drw-divider"></div>
     <div class="drw-tarif">
       <span class="material-icons" style="font-size:16px; color:#8fbc8f;">sell</span>
-      <span style="font-size: 12px; color: #333; font-weight: 600;">
-        $4.90/lb | <i style="opacity: 0.6;">Koli > 49lb → $3.99/lb</i>
+      <span style="font-size:12px; color:#333; font-weight:600;">
+        $4.90/lb | <i style="opacity:0.6;">Koli > 49lb → $3.99/lb</i>
       </span>
     </div>
     <div class="drw-divider"></div>
@@ -181,6 +198,7 @@
 
 <!-- ===== CONTENU PRINCIPAL ===== -->
 <main id="main-content">
+
     <!-- ===== CAROUSEL BANNER ===== -->
     <section id="banner-carousel">
         <div class="carousel-container">
@@ -210,11 +228,11 @@
             </div>
         </div>
     </section>
+
     <!-- ===== HEADER (Annonce + Livrezon + Like) ===== -->
     <header id="main-header">
         <div class="header-content">
 
-            <!-- Enfòmasyon livrezon ak anbakman -->
             <div id="info-livrezon-container">
                 <div class="info-step">
                     <p class="info-title">1. Jou anbakman :</p>
@@ -229,15 +247,15 @@
             </div>
 
             <!-- Bouton Like -->
-            <div style="display: flex; align-items: center; justify-content: center; margin-top: 15px; gap: 10px; background: rgba(255,255,255,0.5); padding: 10px; border-radius: 20px;">
-                <button id="like-btn" onclick="toggleLike()" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; color: var(--bleu-marin); transition: transform 0.2s;">
-                    <span id="like-icon" class="material-icons" style="font-size: 32px;">thumb_up_off_alt</span>
-                    <span id="like-count" style="font-weight: 900; font-size: 1.4em; color: var(--bleu-marin);">1</span>
+            <div style="display:flex; align-items:center; justify-content:center; margin-top:15px; gap:10px; background:rgba(255,255,255,0.5); padding:10px; border-radius:20px;">
+                <button id="like-btn" onclick="toggleLike()" style="background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:8px; color:var(--bleu-marin); transition:transform 0.2s;">
+                    <span id="like-icon" class="material-icons" style="font-size:32px;">thumb_up_off_alt</span>
+                    <span id="like-count" style="font-weight:900; font-size:1.4em; color:var(--bleu-marin);">1</span>
                 </button>
                 <audio id="like-sound" src="bouton.mp3" preload="auto"></audio>
             </div>
 
-            <!-- ===== INCITATION INSCRIPTION (sèlman si pa konekte) ===== -->
+            <!-- CTA Inscription -->
             <div id="register-cta" class="register-cta hidden">
                 <span class="material-icons" style="font-size:20px; color:#8fbc8f;">verified_user</span>
                 <p>Kreye yon kont gratis pou resevwa òf spesyal sèvis la.</p>
@@ -247,19 +265,17 @@
         </div>
     </header>
 
-            <!-- Bann defileman -->
-<div class="announcement-bar">
-    <div class="scrolling-text">
-        Tanpri avan w achte kwakseswa voye nan adrès nou, ou dwe share kaptidekran fason w konfigire adrès lan sou kont ou pou evite erè ak dezagreman nan sèvis lan!
+    <!-- Bann defileman -->
+    <div class="announcement-bar">
+        <div class="scrolling-text">
+            Tanpri avan w achte kwakseswa voye nan adrès nou, ou dwe share kaptidekran fason w konfigire adrès lan sou kont ou pou evite erè ak dezagreman nan sèvis lan!
+        </div>
     </div>
-</div>
 
-<section class="container">
-    </section>
-    <!-- ===== AVIS KLIYAN (design refait) ===== -->
+    <section class="container"></section>
+
+    <!-- ===== AVIS KLIYAN ===== -->
     <section id="avis-clients">
-
-        <!-- En-tête avec titre "Avi kliyan" et note globale -->
         <div class="avis-section-header">
             <div class="avis-title-block">
                 <h2 class="avis-main-title">Avi kliyan</h2>
@@ -277,16 +293,10 @@
                 <div class="avis-score-count">sou 13 avis ✅</div>
             </div>
         </div>
-
-        <!-- Barre de note globale visuelle -->
         <div class="avis-rating-bar-container">
             <div class="avis-rating-bar-fill"></div>
         </div>
-
-        <!-- Konteyner kòmantè yo -->
         <div id="comments-container"></div>
-
-        <!-- Fòm pou ajoute yon nouvo avis -->
         <div class="add-avis">
             <h3>Bay avis pa w</h3>
             <textarea id="user-comment" placeholder="Ekri eksperyans ou isit la..."></textarea>
@@ -297,9 +307,7 @@
     <!-- ===== KONDISYON SÈVIS ===== -->
     <div class="rules-container">
         <img src="lescayesdropshipping2.png" alt="Sèvis nou an" class="rules-image">
-        <a href="decouvrir.html" class="rules-link">
-            Kondisyon pou sèvi ak nou
-        </a>
+        <a href="decouvrir.html" class="rules-link">Kondisyon pou sèvi ak nou</a>
     </div>
 
     <!-- ===== FOOTER DESCRIPTION ===== -->
@@ -307,19 +315,17 @@
         <div class="container-footer">
             <p>Les Cayes Dropshipping se yon platfòm e-commerce ki rann acha sou entènèt pi senp e pi sekirize.
             <strong>Nou se premye chwa tout antreprenè</strong> ki bezwen achte e resevwa atik osinon materyèl sot aletranje.</p>
-
             <div class="social-icons-display">
-                <a href="https://www.facebook.com/share/183Ba3ZzLg/" target="_blank" style="color: inherit; text-decoration: none;">
+                <a href="https://www.facebook.com/share/183Ba3ZzLg/" target="_blank" style="color:inherit; text-decoration:none;">
                     <i class="fab fa-facebook"></i>
                 </a>
-                <a href="https://wa.me/31013968" target="_blank" style="color: inherit; text-decoration: none;">
+                <a href="https://wa.me/31013968" target="_blank" style="color:inherit; text-decoration:none;">
                     <i class="fab fa-whatsapp"></i>
                 </a>
-                <a href="https://www.tiktok.com/@nextgenacademy4?_r=1&_t=ZS-94QQ7rxxfMa" target="_blank" style="color: inherit; text-decoration: none;">
+                <a href="https://www.tiktok.com/@nextgenacademy4?_r=1&_t=ZS-94QQ7rxxfMa" target="_blank" style="color:inherit; text-decoration:none;">
                     <i class="fab fa-tiktok"></i>
                 </a>
             </div>
-
             <div class="contact-info-footer">
                 <p><strong>Haïti Sud :</strong> Suisse Haiti Market anfas poto elektrik LAM124 (Matinière) : Camp-Perrin</p>
                 <p><strong>Adresse USA :</strong> 14030 NW 5th Pl North Miami Florida (Floride) 33168 : États-Unis</p>
@@ -339,15 +345,15 @@
         <span class="material-icons">info</span>
         <p>Règ</p>
     </a>
-    <a href="transaction.html" class="nav-item" style="position: relative;">
+    <a href="transaction.html" class="nav-item" style="position:relative;">
         <span class="material-icons">list_alt</span>
         <p>Tranzaksyon</p>
-        <span id="new-badge" style="position: absolute; top: -4px; right: -2px; background: #e74c3c; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 900; letter-spacing: 0.3px; box-shadow: 0 0 0 0 rgba(231,76,60,0.7); animation: pulseBadge 1.2s ease-out infinite;">NEW</span>
+        <span id="new-badge" style="position:absolute; top:-4px; right:-2px; background:#e74c3c; color:white; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:900; letter-spacing:0.3px; box-shadow:0 0 0 0 rgba(231,76,60,0.7); animation:pulseBadge 1.2s ease-out infinite;">NEW</span>
     </a>
-    <a href="moncompte.html" class="nav-item" style="position: relative;">
+    <a href="moncompte.html" class="nav-item" style="position:relative;">
         <span class="material-icons">person</span>
         <p>Kont mwen</p>
-        <span id="footer-badge" style="position: absolute; top: 2px; right: 15px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none;">0</span>
+        <span id="footer-badge" style="position:absolute; top:2px; right:15px; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:10px; font-weight:bold; display:none;">0</span>
     </a>
 </footer>
 
@@ -360,6 +366,8 @@
 <script type="module">
     import { initializeApp }                     from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAnalytics }                      from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    import { getAuth, onAuthStateChanged }       from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
     const firebaseConfig = {
@@ -374,8 +382,11 @@
 
     const app       = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    const auth      = getAuth(app);
+    const db        = getFirestore(app);
     const messaging = getMessaging(app);
 
+    // ── Sauvegarde notification locale ──
     function saveMessage(title, body) {
         const KEY = 'lcd_user_messages';
         let msgs = JSON.parse(localStorage.getItem(KEY)) || [];
@@ -384,9 +395,81 @@
         msgs.unshift({ id: Date.now(), title, body, time: new Date().toLocaleString('ht-HT'), read: false });
         if (msgs.length > 10) msgs = msgs.slice(0, 10);
         localStorage.setItem(KEY, JSON.stringify(msgs));
-        if (typeof updateNotifBadges === "function") updateNotifBadges();
+        updateNotifBadges();
     }
 
+    // ── Mise à jour badges cloche ──
+    function updateNotifBadges() {
+        const msgs        = JSON.parse(localStorage.getItem('lcd_user_messages')) || [];
+        const unread      = msgs.filter(m => !m.read).length;
+        const dot         = document.getElementById('tb-dot');
+        const footerBadge = document.getElementById('footer-badge');
+        if (dot)         { dot.style.display         = unread > 0 ? 'block' : 'none'; }
+        if (footerBadge) { footerBadge.style.display  = unread > 0 ? 'block' : 'none'; footerBadge.textContent = unread > 0 ? unread : ''; }
+    }
+    // Expose pour appel depuis index.js si nécessaire
+    window.updateNotifBadges = updateNotifBadges;
+
+    // ── Auth state — Synchronisation header + overlay ──
+    onAuthStateChanged(auth, async (user) => {
+        const overlay        = document.getElementById('registration-overlay');
+        const registerCta    = document.getElementById('register-cta');
+        const drwNom         = document.getElementById('drw-nom');
+        const drwLoc         = document.getElementById('drw-loc');
+
+        if (user) {
+            // Utilisateur connecté : masquer overlay, charger profil
+            if (overlay) overlay.style.display = 'none';
+            if (registerCta) registerCta.classList.add('hidden');
+            localStorage.setItem('lcd_user_registered', 'true');
+
+            try {
+                const snap = await getDoc(doc(db, 'users', user.uid));
+                if (snap.exists()) {
+                    const data = snap.data();
+                    // Mise à jour localStorage pour synchronisation avec moncompte.html
+                    localStorage.setItem('user_profile_data', JSON.stringify(data));
+                    // Mise à jour header drawer
+                    if (drwNom) drwNom.textContent = data.nom     || user.displayName || 'Kliyan';
+                    if (drwLoc) drwLoc.textContent = data.address ? data.address.split(',')[0] : 'Haiti-Sud';
+                } else {
+                    if (drwNom) drwNom.textContent = user.displayName || 'Kliyan';
+                }
+            } catch (e) {
+                // Fallback localStorage
+                const local = JSON.parse(localStorage.getItem('user_profile_data')) || {};
+                if (drwNom && local.nom) drwNom.textContent = local.nom;
+            }
+            updateNotifBadges();
+
+        } else {
+            // Utilisateur non connecté
+            const isRegistered = localStorage.getItem('lcd_user_registered') === 'true';
+            const localProfile = JSON.parse(localStorage.getItem('user_profile_data')) || {};
+            const hasLocalProfile = !!(localProfile.nom && localProfile.email);
+
+            if (!isRegistered && !hasLocalProfile) {
+                // Première visite : afficher overlay inscription
+                if (overlay) overlay.style.display = 'flex';
+            } else {
+                // Profil local existant : masquer overlay, afficher CTA secondaire
+                if (overlay) overlay.style.display = 'none';
+                if (registerCta) registerCta.classList.remove('hidden');
+                if (drwNom && localProfile.nom) drwNom.textContent = localProfile.nom;
+                if (drwLoc && localProfile.address) drwLoc.textContent = localProfile.address.split(',')[0];
+            }
+        }
+    });
+
+    // ── Réception messages Firebase ──
+    onMessage(messaging, (payload) => {
+        const { title, body } = payload.notification;
+        saveMessage(title, body);
+        const notif = new Notification(title, { body, icon: "/lescayesdropshipping.png" });
+        notif.onclick = (e) => { e.preventDefault(); window.location.href = "moncompte.html?tab=mesaj"; };
+    });
+
+    // ── Service Worker & Notifications ──
     async function initNotifications() {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
@@ -396,25 +479,140 @@
         }
     }
 
-    onMessage(messaging, (payload) => {
-        const { title, body } = payload.notification;
-        saveMessage(title, body);
-        const notif = new Notification(title, { body, icon: "/lescayesdropshipping.png" });
-        notif.onclick = (e) => { e.preventDefault(); window.location.href = "moncompte.html?tab=mesaj"; };
-    });
-
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then(() => {
-                console.log('SW anrejistre');
-                initNotifications();
-            })
+            .then(() => { initNotifications(); })
             .catch(err => console.log('Erreur SW:', err));
+    }
+
+    // ── Soumission formulaire inscription (Web3Forms) ──
+    const regForm = document.getElementById('registration-form');
+    if (regForm) {
+        regForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const nom      = document.getElementById('reg-nom').value.trim();
+            const email    = document.getElementById('reg-email').value.trim();
+            const phone    = document.getElementById('reg-phone').value.trim();
+            const address  = document.getElementById('reg-address').value.trim();
+            const reference = document.getElementById('reg-reference').value;
+            const referant = document.getElementById('reg-referant-name').value.trim();
+
+            if (!nom || !email) {
+                alert('Non ak imèl obligatwa.');
+                return;
+            }
+
+            const profileData = { nom, email, phone, address, reference, whatsapp_referant: referant };
+            localStorage.setItem('user_profile_data', JSON.stringify(profileData));
+            localStorage.setItem('lcd_user_registered', 'true');
+
+            // Envoi Web3Forms
+            const formData = new FormData();
+            formData.append('access_key', 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a');
+            formData.append('subject',    'Nouvo Enskripsyon LCDrop: ' + nom);
+            Object.keys(profileData).forEach(k => formData.append(k, profileData[k]));
+
+            const btn = document.getElementById('btn-submit');
+            btn.textContent = 'Anrejistre...';
+            btn.disabled = true;
+
+            try {
+                await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+            } catch (e) {}
+
+            btn.textContent = 'Kreye Kont Mwen →';
+            btn.disabled = false;
+
+            const overlay = document.getElementById('registration-overlay');
+            if (overlay) overlay.style.display = 'none';
+
+            // Mise à jour drawer
+            const drwNom = document.getElementById('drw-nom');
+            if (drwNom) drwNom.textContent = nom;
+        });
     }
 </script>
 
 <!-- ===== JAVASCRIPT PRINCIPAL ===== -->
 <script src="index.js"></script>
+
+<!-- ===== LOGIQUE FORMULAIRE SÉQUENTIEL & INSTALL ===== -->
+<script>
+    // ── Formulaire progressif ──
+    const TOTAL_STEPS = 5;
+
+    function updateProgress(step) {
+        const fill  = document.getElementById('progress-fill');
+        const label = document.getElementById('progress-label');
+        if (fill)  fill.style.width = ((step / TOTAL_STEPS) * 100) + '%';
+        if (label) label.textContent = step + ' / ' + TOTAL_STEPS;
+    }
+
+    function regNext(currentStep) {
+        const stepEl = document.getElementById('step-' + currentStep);
+        const inputs = stepEl ? stepEl.querySelectorAll('input, select') : [];
+        let valid = true;
+        inputs.forEach(inp => {
+            if (!inp.value.trim() && inp.id !== 'reg-referant-name') {
+                inp.style.borderBottom = '2px solid red';
+                inp.focus();
+                valid = false;
+            } else {
+                inp.style.borderBottom = '';
+            }
+        });
+        if (!valid) return;
+
+        if (stepEl) stepEl.style.display = 'none';
+        const nextEl = document.getElementById('step-' + (currentStep + 1));
+        if (nextEl) {
+            nextEl.style.display = 'block';
+            const firstInput = nextEl.querySelector('input, select');
+            if (firstInput) firstInput.focus();
+        }
+        updateProgress(currentStep + 1);
+    }
+
+    function toggleReferant() {
+        const sel = document.getElementById('reg-reference');
+        const box = document.getElementById('referant-container');
+        if (box) box.style.display = sel && sel.value === 'WhatsApp' ? 'flex' : 'none';
+    }
+
+    function showRegistrationOverlay() {
+        const overlay = document.getElementById('registration-overlay');
+        if (overlay) overlay.style.display = 'flex';
+    }
+
+    // ── A2HS Install Banner ──
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const banner = document.getElementById('install-banner');
+        if (banner) banner.classList.remove('hidden');
+    });
+
+    const installBtn = document.getElementById('install-btn');
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            if (outcome === 'accepted') {
+                const banner = document.getElementById('install-banner');
+                if (banner) banner.classList.add('hidden');
+            }
+        });
+    }
+
+    window.addEventListener('appinstalled', () => {
+        const banner = document.getElementById('install-banner');
+        if (banner) banner.classList.add('hidden');
+    });
+</script>
 
 </body>
 </html>
