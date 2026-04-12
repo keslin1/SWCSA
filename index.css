@@ -273,7 +273,7 @@ body {
 .install-info span   { font-size: 12px; color: #555; }
 
 #install-btn {
-  background: var(--bleu-marin);
+  background: #6E0B14;
   color: white;
   border: none;
   padding: 9px 16px;
