@@ -249,7 +249,7 @@ body {
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(0,188,212,0.35);
   color: var(--bleu-marin);
-  padding: 14px 16px;
+  padding: 10px 16px;
   border-radius: 14px;
   display: flex;
   align-items: center;
