@@ -3,219 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google" content="notranslate" />
     <title>Pwofil — Les Cayes Dropshipping</title>
-    <link rel="stylesheet" href="base.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <style>
-        :root{--bleu-marin:#001f3f;--bleu-clair:#0074D9;--kaki:#8fbc8f;--rouge:#e74c3c;--blanc-fond:#ffffff;--gris-bg:#f4f6f8;--vert-menu:#004D40;--top-bar-h:60px;--annonce-h:34px}
-        *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
-        body{font-family:'Poppins','Nunito',sans-serif;background:var(--gris-bg);color:#333;padding-top:calc(var(--annonce-h) + var(--top-bar-h));padding-bottom:80px}
-        .annonce-fixed{position:fixed;top:0;left:0;right:0;height:var(--annonce-h);background:var(--bleu-marin);color:#fff;overflow:hidden;white-space:nowrap;display:flex;align-items:center;font-size:.82em;font-weight:500;z-index:650;border-bottom:1px solid rgba(255,255,255,.1)}
-        .scrolling-text{display:inline-block;padding-left:100%;animation:scrollTxt 20s linear infinite}
-        @keyframes scrollTxt{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-        #top-bar{position:fixed;top:var(--annonce-h);left:0;right:0;height:var(--top-bar-h);background:var(--blanc-fond);border-bottom:1px solid #f0f0f0;display:flex;align-items:center;padding:0 14px;gap:10px;z-index:600;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-        .tb-back{width:38px;height:38px;border-radius:10px;background:#f0f0f0;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--bleu-marin)}
-        .tb-title{flex:1;font-size:15px;font-weight:900;color:var(--bleu-marin);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-        .profil-hero{background:linear-gradient(135deg,var(--bleu-marin) 0%,#0074D9 100%);padding:28px 20px 22px;text-align:center;color:white}
-        .profil-hero-name{font-size:1.45em;font-weight:900;letter-spacing:-.02em}
-        .profil-hero-sub{font-size:.85em;color:rgba(255,255,255,.65);margin-top:4px}
-        .profil-tabs{display:flex;background:var(--blanc-fond);border-bottom:2px solid #eee;position:sticky;top:calc(var(--annonce-h) + var(--top-bar-h));z-index:100}
-        .tab-btn{flex:1;padding:14px 10px;border:none;background:none;font-family:inherit;font-size:13px;font-weight:700;color:#999;cursor:pointer;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;display:flex;align-items:center;justify-content:center;gap:6px}
-        .tab-btn.active{color:var(--bleu-marin);border-bottom-color:var(--kaki)}
-        .tab-btn .material-icons{font-size:18px}
-        .profil-content{display:none;padding:20px 15px}
-        .profil-content.active{display:block}
-        .profil-carousel{overflow-x:scroll;height:110px;margin:0 -15px 18px;padding:0 0 0 15px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-        .profil-carousel::-webkit-scrollbar{display:none}
-        .profil-carousel-inner{height:100%;display:flex}
-        .profil-banner-item{min-width:calc(100vw - 30px);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:white;text-align:center;padding:15px 20px;position:relative;margin-right:12px;flex-shrink:0;scroll-snap-align:start;border-radius:10px}
-        .profil-banner-item::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.55);border-radius:10px;z-index:1}
-        .profil-banner-txt{position:relative;z-index:2;width:100%}
-        .profil-banner-txt h2{font-size:1em;font-weight:900;text-transform:uppercase;text-shadow:1px 1px 3px #000;margin:0}
-        .profil-banner-txt p{font-size:.75em;margin-top:4px;text-shadow:1px 1px 2px #000}
-        .profil-section-title{font-size:1.05em;font-weight:900;color:var(--bleu-marin);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
-        .profil-section-title .material-icons{font-size:20px;color:var(--kaki)}
-        .profil-card{background:var(--blanc-fond);border-radius:14px;padding:16px 18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-        .profil-card p{font-size:.9em;line-height:1.6;color:#555;margin-bottom:10px}
-        .profil-card p:last-child{margin-bottom:0}
-        .etapes-list{list-style:none;padding:0}
-        .etapes-list li{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid #f0f0f0;font-size:.88em;line-height:1.5;color:#444}
-        .etapes-list li:last-child{border-bottom:none}
-        .etape-num{width:26px;height:26px;border-radius:50%;background:var(--bleu-marin);color:white;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-        .service-note{background:linear-gradient(135deg,#00ced1 0%,#ffdb58 100%);color:#111;padding:14px 16px;border-radius:10px;margin-top:14px;font-size:.88em;line-height:1.5}
-        .service-note strong{font-weight:900}
-        .profil-cta{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--bleu-marin);color:white;border:none;border-radius:30px;padding:14px 24px;width:100%;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:16px;text-decoration:none;transition:opacity .2s}
-        .profil-cta:active{opacity:.82}
-        .profil-cta .material-icons{font-size:18px}
-        #main-footer{display:flex;justify-content:space-around;align-items:center;position:fixed;bottom:0;left:0;width:100%;height:60px;background:var(--blanc-fond);box-shadow:0 -2px 5px rgba(0,0,0,.1);z-index:1000}
-        #main-footer a,#main-footer a:visited,#main-footer a:hover,#main-footer a:active{text-decoration:none;color:inherit}
-        .nav-item{text-align:center;font-size:.75em;padding:5px;position:relative;color:#004D40;text-decoration:none}
-        #main-footer .material-icons{color:#004D40;font-size:24px}
-        .nav-item p{margin:0}
+        :root {
+            --bleu-marin: #001f3f;
+            --bleu-pale: #5D6D7E; /* Koulè ble marin pal la */
+            --kaki: #8fbc8f;
+            --blanc: #ffffff;
+            --gris-frenk: #f8f9fa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--gris-frenk);
+            color: var(--bleu-marin);
+            padding: 40px 20px 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Salitasyon */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .welcome-section h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            font-size: 16px;
+            color: var(--bleu-pale);
+        }
+
+/* Seleksyon Pwofil */
+.profile-selector {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 30px;
+}
+
+.choice-btn {
+    flex: 1;
+    height: 120px; /* Nou fòse yon wotè pou imaj la ka parèt byen */
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid;
+    background-color: var(--blanc);
+    color: var(--bleu-marin);
+    z-index: 1;
+}
+
+/* Kreyasyon kouch imaj la nan fon an */
+.choice-btn::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15; /* Opasite lè li pa aktif */
+    z-index: -1;
+    transition: opacity 0.4s ease;
+}
+
+/* Plasman imaj espesifik yo */
+.btn-img-pro::before { background-image: url('camera.jpg'); }
+.btn-img-entr::before { background-image: url('machandiz.jpg'); }
+
+.choice-btn .material-icons { 
+    font-size: 32px; 
+    color: var(--bleu-pale); 
+    transition: color 0.4s;
+}
+
+.choice-btn span { 
+    font-weight: 800; 
+    font-size: 14px; 
+    position: relative;
+    z-index: 2;
+}
+
+/* Style Lè Bouton an Aktif */
+.choice-btn.active {
+    border-color: var(--bleu-marin);
+    background-color: var(--bleu-marin);
+    color: white;
+    box-shadow: 0 12px 24px rgba(0, 31, 63, 0.25);
+}
+
+.choice-btn.active::before {
+    opacity: 0.3; /* Imaj la parèt yon ti jan plis lè l aktif */
+    filter: grayscale(100%) brightness(50%); /* Pou l melanje ak ble marin nan */
+}
+
+.choice-btn.active .material-icons { 
+    color: white; 
+}
+
+        /* Kontni Step-by-Step */
+        .content-area {
+            width: 100%;
+            max-width: 500px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-area.active { display: block; }
+
+.step-card {
+    background: var(--gris-frenk); /* Même couleur que le fond pour l'effet fusion */
+    padding: 25px;
+    border-radius: 30px; 
+    margin-bottom: 25px;
+    
+    /* Effet de profondeur sculptée (Neumorphism) */
+    box-shadow: 8px 8px 16px #d1d9e6, 
+               -8px -8px 16px #ffffff;
+    
+    border: none; /* On enlève les bordures classiques */
+    position: relative;
+    overflow: hidden;
+    
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+        /* Animasyon pou etap yo parèt youn apre lòt */
+        .show-step {
+            animation: slideIn 0.5s forwards;
+        }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+/* Indicateur d'étape ultra-discret mais luxueux */
+.step-num {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 40px;
+    font-weight: 900;
+    color: rgba(0, 31, 63, 0.03); /* Chiffre géant presque invisible en fond */
+    z-index: 0;
+}
+
+.step-title {
+    position: relative;
+    z-index: 1;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--bleu-marin);
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Une petite barre d'accentuation moderne en haut à gauche */
+.step-title::before {
+    content: '';
+    width: 12px;
+    height: 3px;
+    background: var(--kaki);
+    border-radius: 10px;
+    display: inline-block;
+}
+.step-text {
+    position: relative;
+    z-index: 1;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--bleu-pale);
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+/* Effet d'interaction premium */
+.step-card:active {
+    box-shadow: inset 6px 6px 12px #d1d9e6, 
+                inset -6px -6px 12px #ffffff;
+    transform: scale(0.98);
+}
+
+        .nav-item .material-icons { font-size: 24px; display: block; margin-bottom: 4px; }
+        .nav-item.active { color: var(--bleu-marin); }
+
     </style>
 </head>
 <body>
 
-<div class="annonce-fixed">
-    <div class="scrolling-text">Tanpri avan w achte kwakseswa voye nan adrès nou, ou dwe share kaptidekran fason w konfigire adrès lan sou kont ou pou evite erè ak dezagreman nan sèvis lan!</div>
+    <section class="welcome-section">
+        <h1 id="user-greeting">Bonjou 👋</h1>
+        <p>Kiyès ou ye nan sistèm lan?</p>
+    </section>
+
+<div class="profile-selector">
+    <div class="choice-btn btn-img-pro" id="btn-pro" onclick="selectProfile('pro')">
+        <span class="material-icons">engineering</span>
+        <span>Pwofesyonèl</span>
+    </div>
+    <div class="choice-btn btn-img-entr" id="btn-entr" onclick="selectProfile('entr')">
+        <span class="material-icons">payments</span>
+        <span>Antreprenè</span>
+    </div>
 </div>
 
-<header id="top-bar">
-    <button class="tb-back" onclick="window.location.href='index.html'">
-        <span class="material-icons">arrow_back</span>
-    </button>
-    <span class="tb-title" id="tb-profil-title">Kiyès ou ye?</span>
-</header>
-
-<div class="profil-hero">
-    <div class="profil-hero-name" id="hero-name">Bonjou 👋</div>
-    <div class="profil-hero-sub">Chwazi pwofil ki pi koresponn ak ou</div>
-</div>
-
-<div class="profil-tabs">
-    <button class="tab-btn active" id="tab-pro" onclick="switchTab('pro')">
-        <span class="material-icons">build</span>Pwofesyonèl
-    </button>
-    <button class="tab-btn" id="tab-entr" onclick="switchTab('entr')">
-        <span class="material-icons">storefront</span>Antreprenè
-    </button>
-</div>
-
-<!-- ===== CONTENU PWOFESYONÈL ===== -->
-<div class="profil-content active" id="content-pro">
-    <div class="profil-carousel">
-        <div class="profil-carousel-inner">
-            <div class="profil-banner-item" style="background-image:url('kontr.jpg');">
-                <div class="profil-banner-txt">
-                    <h2>achte zouti modèn pou travay</h2>
-                    <p>pou devni pi pèfòman nan metye w lan.</p>
-                </div>
-            </div>
+    <div id="res-pro" class="content-area">
+        <div class="step-card" style="animation-delay: 0.2s;">
+            <span class="step-num">Etap 1</span>
+            <span class="step-title">Idantifye bezwen w</span>
+            <p class="step-text">Chèche zouti oswa materyèl ki nesesè pou rann travay ou pi pwofesyonèl. Ou ka tcheke sou <strong>Temu</strong>, <strong>Amazon</strong> ak lòt platfòm ankò.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.4s;">
+            <span class="step-num">Etap 2</span>
+            <span class="step-title">Achte</span>
+            <p class="step-text">Konfigire adrès lan sou kont platfòm wap achte yo. Siw pa gen kat, kopye lyen atik lan voye l ban nou. Nou wè ansanm pri final lan, ou peye pou order l pou ou.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.6s;">
+            <span class="step-num">Etap 3</span>
+            <span class="step-title">Resevwa an Ayiti</span>
+            <p class="step-text">Nou resevwa l an Florid, nou livre l an Ayiti pou ou nan dat nap gen okazyon.</p>
         </div>
     </div>
 
-    <p class="profil-section-title"><span class="material-icons">engineering</span> Pwofesyonèl</p>
-
-    <div class="profil-card">
-        <p>Nenpòt metye w ap egzèse — serigrafi, chapant, atis, enfòmatisyen — se kalite materyèl ou ki detèmine vitès ak presizyon travay ou. Pa kite manke zouti anpeche w avanse.</p>
-        <p><strong>SE ZOUTI KI FÈ KALITE TRAVAY.</strong></p>
-    </div>
-
-    <p class="profil-section-title"><span class="material-icons">checklist</span> Kisa pou w fè?</p>
-
-    <div class="profil-card">
-        <ul class="etapes-list">
-            <li><span class="etape-num">1</span><span>Ale sou <strong>Temu</strong> oswa <strong>Amazon</strong>.</span></li>
-            <li><span class="etape-num">2</span><span>Chèche zouti ki nesesè pou metye w la.</span></li>
-            <li><span class="etape-num">3</span><span>Voye foto osinon lyen an ban nou sou WhatsApp.</span></li>
-        </ul>
-        <div class="service-note">
-            <strong>Sèvis nou :</strong> Nou achte yo pou ou a pi bon pri, e nou livre w yo isit an Ayiti. Ou pa bezwen kat kredi — nou jere tout acha a.
+    <div id="res-entr" class="content-area">
+        <div class="step-card" style="animation-delay: 0.2s;">
+            <span class="step-num">Etap 1</span>
+            <span class="step-title">Idantifye yon mache</span>
+            <p class="step-text">Gade ki pwodwi ki manke nan vil ou an (kosmetik, pyès, materyèl agrikòl) ki ka vann vit.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.4s;">
+            <span class="step-num">Etap 2</span>
+            <span class="step-title">Gwo kòmand (bulk)</span>
+            <p class="step-text">Chwazi founisè ki gen pi bon pri sou <strong>Alibaba</strong>, <strong>AliExpress</strong>, achte tout saw swete yo nan yon sèl okazyon.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.6s;">
+            <span class="step-num">Etap 3</span>
+            <span class="step-title">Distribisyon</span>
+            <p class="step-text">Sèvi ak depo nou an Florid pou voye koli, stòk machandiz ou vin nan men w yon sèl kou. Nou livre nan tout peyi an pouw pa gen limit ak biznis ou.</p>
         </div>
     </div>
+    
+    <script>
+        // Pèsonalizasyon non an
+        document.addEventListener('DOMContentLoaded', function() {
+            const profile = JSON.parse(localStorage.getItem('user_profile_data') || '{}');
+            const nom = (profile.nom || '').split(' ')[0];
+            if(nom) {
+                document.getElementById('user-greeting').textContent = 'Bonjou ' + nom + ' 👋';
+            }
+        });
 
-    <a href="https://wa.me/50931013968?text=Bonjou%20mwen%20se%20yon%20pwofesyonèl%2C%20m%20vle%20achte%20zouti" target="_blank" class="profil-cta">
-        <span class="material-icons">whatsapp</span>Kontakte nou pou zouti w yo
-    </a>
-</div>
+        function selectProfile(type) {
+            // Reset bouton yo
+            document.getElementById('btn-pro').classList.remove('active');
+            document.getElementById('btn-entr').classList.remove('active');
+            
+            // Reset kontni an
+            document.getElementById('res-pro').classList.remove('active');
+            document.getElementById('res-entr').classList.remove('active');
+            
+            // Aktive sa k klike a
+            document.getElementById('btn-' + type).classList.add('active');
+            const targetContent = document.getElementById('res-' + type);
+            targetContent.classList.add('active');
 
-<!-- ===== CONTENU ANTREPRENÈ ===== -->
-<div class="profil-content" id="content-entr">
-    <div class="profil-carousel" id="carousel-entr">
-        <div class="profil-carousel-inner">
-            <div class="profil-banner-item" style="background-image:url('LCD 1.gif');">
-                <div class="profil-banner-txt">
-                    <h2>oumenm tou w ka gen yon biznis</h2>
-                    <p>Achte pwodui an Chine kew vle vann, voye nan antrepo nou.</p>
-                </div>
-            </div>
-            <div class="profil-banner-item" style="background-image:url('LCD 2.gif');">
-                <div class="profil-banner-txt">
-                    <h2>Livrezon nan 4 kwen peyi an</h2>
-                    <p>kliyan nan Sud, P-au-P, Okap, Jeremi, TiGwav, Leogane.</p>
-                </div>
-            </div>
-            <div class="profil-banner-item" style="background-image:url('rechajkatwise.jpg');">
-                <div class="profil-banner-txt">
-                    <h2>Ban n achte pou ou</h2>
-                    <p>siw pa gen kat, pataje link panye w nap order yo pou ou.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+            // Fòse animasyon etap yo
+            const cards = targetContent.querySelectorAll('.step-card');
+            cards.forEach(card => {
+                card.classList.remove('show-step');
+                void card.offsetWidth; // Trigger reflow
+                card.classList.add('show-step');
+            });
 
-    <p class="profil-section-title"><span class="material-icons">trending_up</span> Antreprenè</p>
-
-    <div class="profil-card">
-        <p><strong>Opòtinite :</strong> Gen anpil bagay moun bezwen men yo paka jwenn sou mache bòlakay ou. Si w idantifye kisa ki manke — materyèl pou gita, perik, linèt de mòd — se opòtinite pou w fè kòb.</p>
-        <p><strong>FÈ YON TI BIZNIS PÈSÒN MOUN POKO FÈ.</strong></p>
-    </div>
-
-    <p class="profil-section-title"><span class="material-icons">checklist</span> Kòman pou w kòmanse?</p>
-
-    <div class="profil-card">
-        <ul class="etapes-list">
-            <li><span class="etape-num">1</span><span>Analize sa ki manke nan zòn ou an oswa nan sektè w gen kontak.</span></li>
-            <li><span class="etape-num">2</span><span>Chèche atik lan sou <strong>Temu</strong> oswa <strong>Shein</strong>.</span></li>
-            <li><span class="etape-num">3</span><span>Voye lyen oswa foto pwodui a ban nou — nou achte, nou anbake, nou delivre.</span></li>
-        </ul>
-        <div class="service-note">
-            <strong>Sèvis nou :</strong> Nou jere tout pwosesis acha a ak anbakman an. Ou peye frè ekspedisyon yo, nou delivre machandiz la, epi ou revann li ak yon bèl maj benefis.
-        </div>
-    </div>
-
-    <a href="https://wa.me/50931013968?text=Bonjou%20mwen%20se%20yon%20antrepreneur%2C%20m%20vle%20kòmanse%20yon%20biznis" target="_blank" class="profil-cta">
-        <span class="material-icons">whatsapp</span>Kòmanse biznis ou jodi a
-    </a>
-</div>
-
-<!-- ── FOOTER (liens directs, SANS page-loader) ── -->
-<footer id="main-footer">
-    <a href="index.html" class="nav-item"><span class="material-icons">home</span><p>Akèy</p></a>
-    <a href="decouvrir.html" class="nav-item"><span class="material-icons">info</span><p>Règ</p></a>
-    <a href="transaction.html" class="nav-item"><span class="material-icons">list_alt</span><p>Tranzaksyon</p></a>
-    <a href="moncompte.html" class="nav-item"><span class="material-icons">person</span><p>Kont mwen</p></a>
-</footer>
-
-<script>
-(function() {
-    var profile = JSON.parse(localStorage.getItem('user_profile_data') || '{}');
-    var nom = (profile.nom || '').trim();
-    if (nom) {
-        var prenom = nom.split(' ')[0];
-        var titleEl = document.getElementById('tb-profil-title');
-        var heroEl  = document.getElementById('hero-name');
-        if (titleEl) titleEl.textContent = 'Kiyès ' + prenom + ' ye?';
-        if (heroEl)  heroEl.textContent  = 'Bonjou ' + prenom + ' \uD83D\uDC4B';
-    }
-    var lastTab = localStorage.getItem('lcd_profil_choisi') || 'pro';
-    switchTab(lastTab);
-
-    // Auto-scroll carousel antreprenè
-    var carEntr = document.getElementById('carousel-entr');
-    if (carEntr) {
-        var items = carEntr.querySelectorAll('.profil-banner-item');
-        var scroll = 0;
-        setInterval(function() {
-            var w = (items[0] ? items[0].offsetWidth : 0) + 12;
-            scroll = (scroll >= w * (items.length - 1)) ? 0 : scroll + w;
-            carEntr.scrollTo({ left: scroll, behavior: 'smooth' });
-        }, 8000);
-    }
-})();
-
-function switchTab(tab) {
-    document.getElementById('tab-pro').classList.toggle('active',  tab === 'pro');
-    document.getElementById('tab-entr').classList.toggle('active', tab === 'entr');
-    document.getElementById('content-pro').classList.toggle('active',  tab === 'pro');
-    document.getElementById('content-entr').classList.toggle('active', tab === 'entr');
-    localStorage.setItem('lcd_profil_choisi', tab);
-}
-window.switchTab = switchTab;
-</script>
+            localStorage.setItem('lcd_profil_choisi', type);
+        }
+    </script>
 </body>
 </html>

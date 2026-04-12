@@ -79,7 +79,7 @@
 
         /* ── CARTE EN-TÊTE PAGE ── */
         .inv-page-header {
-            background: linear-gradient(135deg, var(--bleu-marin) 0%, #003d7a 100%);
+            background: linear-gradient(135deg, #4682B4 0%, #003d7a 100%);
             border-radius: 16px;
             padding: 18px 18px 16px;
             margin-bottom: 16px;
@@ -158,7 +158,7 @@
             justify-content: center;
             gap: 6px;
             padding: 12px 16px;
-            background: var(--bleu-marin);
+            background: #5E7D9A;
             color: white;
             border: none;
             border-radius: 10px;
@@ -213,7 +213,7 @@
         }
 
         .inv-table thead tr {
-            background: var(--bleu-marin);
+            background: #5E7D9A;
         }
 
         .inv-table th {
@@ -383,12 +383,14 @@
         </div>
         <div class="inv-form-grid">
             <input type="text" id="inv-nom" class="inv-input inv-input-full"
-                   placeholder="Deskripsyon atik (ex: TV 55p, Machin à coudre...)">
+                   placeholder="Deskripsyon koli sa (ex: TV 55p, Machin à coudre...)">
             <input type="text" id="inv-tracking" class="inv-input"
-                   placeholder="Nimewo Tracking">
-            <input type="date" id="inv-date" class="inv-input">
-        </div>
-        <div class="inv-form-actions">
+                   placeholder="Nimewo anbalaj lan">
+<input type="text" id="inv-date" class="inv-input" 
+       placeholder="Dat livrezon an" 
+       onfocus="(this.type='date')" 
+       onblur="if(!this.value)this.type='text'">
+            <div class="inv-form-actions">
             <button class="inv-add-btn" id="inv-add-btn-main" onclick="invAdd()">
                 <span class="material-icons" style="font-size:18px;">add_circle</span>
                 Ajoute
@@ -414,7 +416,7 @@
                     <tr>
                         <th>#</th>
                         <th>Deskripsyon</th>
-                        <th>Tracking #</th>
+                        <th>Nimewo #</th>
                         <th>Dat Livrezon</th>
                         <th class="inv-hide-cap">Aksyon</th>
                     </tr>

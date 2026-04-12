@@ -162,13 +162,13 @@ body {
 
 #btn-submit:active { transform: scale(0.97); }
 
-/* ── ANNOUNCEMENT BAR — fixée sous la top bar ── */
+/* ── ANNOUNCEMENT BAR — défile naturellement avec la page ── */
 .announcement-bar-fixed {
-  position: fixed !important;
-  top: var(--top-bar-h);
-  left: 0;
-  right: 0;
-  z-index: 590;
+  position: static;
+  top: unset;
+  left: unset;
+  right: unset;
+  z-index: unset;
   background-color: var(--bleu-marin);
   color: var(--blanc-fond);
   overflow: hidden;

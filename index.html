@@ -93,10 +93,11 @@
 <!-- ===== BANNER ENSTALE — affiche après 30s si pas installé ===== -->
 <div id="install-banner" class="hidden install-blink">
   <div class="install-info">
-    <strong>Enstale aplikasyon an</strong>
+    <strong>📲 Enstale aplikasyon an</strong>
     <span>Pou gen sèvis lan sou telefòn ou</span>
+    <span style="font-size:11px; color:#0074D9; margin-top:4px;">🔔 Pèmèt notifikasyon yo tou pou w resevwa nouvèl anbakman yo</span>
   </div>
-  <button id="install-btn">Enstale</button>
+  <button id="install-btn">OK</button>
 </div>
 
 <!-- ===== TOP BAR ===== -->
@@ -251,7 +252,7 @@
                     <span id="like-icon" class="material-icons">thumb_up_off_alt</span>
                     <span id="like-count">1</span>
                 </button>
-                <a href="#avis-clients" class="react-btn react-btn-comment" title="Ekri yon avis">
+                <a href="#comments-container" class="react-btn react-btn-comment" title="Ekri yon avis">
                     <span class="material-icons">chat_bubble_outline</span>
                     <span>Avis</span>
                 </a>
@@ -620,14 +621,24 @@
     const installBtn = document.getElementById('install-btn');
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            deferredPrompt = null;
-            if (outcome === 'accepted') {
-                const banner = document.getElementById('install-banner');
-                if (banner) banner.classList.add('hidden');
+            // 1. Demander la permission de notification Firebase
+            if ('Notification' in window && Notification.permission === 'default') {
+                try { await Notification.requestPermission(); } catch(e) {}
             }
+            // 2. Lancer le prompt d'installation PWA
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                if (outcome === 'accepted') {
+                    const banner = document.getElementById('install-banner');
+                    if (banner) banner.classList.add('hidden');
+                    return;
+                }
+            }
+            // Fermer le banner dans tous les cas
+            const banner = document.getElementById('install-banner');
+            if (banner) banner.classList.add('hidden');
         });
     }
 

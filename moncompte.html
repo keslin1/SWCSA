@@ -284,7 +284,10 @@
 <body>
 
 <header class="header-top">
-    <h1>Kont mwen</h1>
+    <div id="top-bar-brand" style="display:flex; align-items:center; gap:9px; flex:1;">
+        <img src="lescayesdropshipping.png" alt="LCD" id="top-bar-logo" style="width:30px; height:30px; border-radius:7px; object-fit:contain;">
+        <span id="top-bar-title" style="font-size:14px; font-weight:900; color:var(--bleu-marin); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Kont mwen</span>
+    </div>
     <div class="icon-right">
         <div style="position:relative; cursor:pointer; display:flex; align-items:center;" onclick="openMessageModal()">
             <span class="material-icons">notifications</span>
